@@ -1,0 +1,55 @@
+{
+    "name": "telegram-bot-essentials/affiliates",
+    "version": "0.0.1",
+    "description": "Affiliate feature built for telegram-bot-essentials/essence",
+    "type": "library",
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^12",
+        "telegram-bot-essentials/billing": "*",
+        "telegram-bot-essentials/essence": "*",
+        "telegram-bot-essentials/settings": "*",
+        "telegram-bot-essentials/user-wallet": "*"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "TelegramBotEssentials\\Affiliates\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Elyar",
+            "email": "elyareranjbar@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../telegram-bot-essentials"
+        },
+        {
+            "type": "path",
+            "url": "../tbe-billing"
+        },
+        {
+            "type": "path",
+            "url": "../tbe-settings"
+        },
+        {
+            "type": "path",
+            "url": "../tbe-user-wallet"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "TbeAffiliatesServiceProvider"
+            ]
+        }
+    }
+}
