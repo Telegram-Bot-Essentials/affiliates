@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9362952c32d9d3f3e5eec8b6fec4c569",
+    "content-hash": "7a6b74b16a9a36e64b097475d04e066c",
     "packages": [
         {
             "name": "brick/math",
@@ -6038,7 +6038,7 @@
             "dist": {
                 "type": "path",
                 "url": "../tbe-billing",
-                "reference": "be4fc2bbe88a4e077529c0d69fb651d6feb69ec6"
+                "reference": "fa83edd4f493b7d2bf060d9294332bea357009a7"
             },
             "require": {
                 "elyar/personal-laravel-helpers": "v0.0.2",
@@ -6082,7 +6082,7 @@
             "dist": {
                 "type": "path",
                 "url": "../telegram-bot-essentials",
-                "reference": "c5a014bafe401c0a0ec35ba9f5e1fa78811b5d77"
+                "reference": "570063adf3be9bfaca37ad22ad83c1aeabc779e6"
             },
             "require": {
                 "elyar/personal-laravel-helpers": "^0.0.2",
@@ -6132,7 +6132,7 @@
             "dist": {
                 "type": "path",
                 "url": "../tbe-settings",
-                "reference": "5c86226a5a7b73fdb0c2ba6b32fdf26fa3725d66"
+                "reference": "29ed36ea7da861df897e5ae967cc97c99290a999"
             },
             "require": {
                 "laravel/framework": "^12",
@@ -6165,6 +6165,47 @@
                 }
             ],
             "description": "Settings support built for telegram-bot-essentials/essence",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "telegram-bot-essentials/user-wallet",
+            "version": "0.0.1",
+            "dist": {
+                "type": "path",
+                "url": "../tbe-user-wallet",
+                "reference": "cd895fc86cde6d2f0f9d7caed70d516124c965f7"
+            },
+            "require": {
+                "laravel/framework": "^12",
+                "php": "^8.2",
+                "telegram-bot-essentials/billing": "*",
+                "telegram-bot-essentials/essence": "*"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "TelegramBotEssentials\\UserWallet\\TbeUserWalletServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TelegramBotEssentials\\UserWallet\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Elyar",
+                    "email": "elyareranjbar@gmail.com"
+                }
+            ],
+            "description": "User wallet feature built for telegram-bot-essentials/essence",
             "transport-options": {
                 "relative": true
             }

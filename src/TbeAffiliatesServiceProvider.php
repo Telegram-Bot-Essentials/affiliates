@@ -3,10 +3,13 @@
 namespace TelegramBotEssentials\Affiliates;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use TelegramBotEssentials\Essence\Exceptions\LogicException;
 use TelegramBotEssentials\Settings\DTOs\Setting;
 use TelegramBotEssentials\Settings\Enums\SettingType;
+use TelegramBotEssentials\Billing\Events\InvoicePaid;
+use TelegramBotEssentials\Affiliates\Listeners\HandleInvoicePaid;
 
 class TbeAffiliatesServiceProvider extends ServiceProvider
 {
@@ -31,6 +34,11 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
 
         stateAnswerBus()->addStateAnswers([
         ]);
+
+        Event::listen(
+            InvoicePaid::class,
+            HandleInvoicePaid::class,
+        );
 
         $this->addSettings();
     }

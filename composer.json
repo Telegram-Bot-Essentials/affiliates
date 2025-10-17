@@ -48,7 +48,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "TbeAffiliatesServiceProvider"
+                "TelegramBotEssentials\\Affiliates\\TbeAffiliatesServiceProvider"
             ]
         }
     }
