@@ -11,7 +11,7 @@ class HandleInvoicePaid implements ShouldQueue
 {
     use InteractsWithQueue;
 
-    public string $queue = 'affiliates';
+    public string $queue = 'billing';
 
     public function handle(InvoicePaid $event): void
     {
