@@ -5,6 +5,8 @@ namespace TelegramBotEssentials\Affiliates;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
+use TelegramBotEssentials\Affiliates\Telegram\CallbackQueries\Member\AffiliationQuery;
+use TelegramBotEssentials\Affiliates\Telegram\StateAnswers\Member\AffiliationAnswer;
 use TelegramBotEssentials\Essence\Exceptions\LogicException;
 use TelegramBotEssentials\Settings\DTOs\Setting;
 use TelegramBotEssentials\Settings\Enums\SettingType;
@@ -30,9 +32,11 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'tbe-affiliates');
 
         callbackQueryBus()->addCallbackQueries([
+            AffiliationQuery::class
         ]);
 
         stateAnswerBus()->addStateAnswers([
+            AffiliationAnswer::class
         ]);
 
         Event::listen(
