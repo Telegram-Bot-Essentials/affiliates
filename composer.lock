@@ -6038,7 +6038,7 @@
             "dist": {
                 "type": "path",
                 "url": "../tbe-billing",
-                "reference": "de95a36d8b8cebf71c05c6de0cb7b81d9cf06acb"
+                "reference": "ec2f9d8badd95c27490dffd0da5c27830ad4337d"
             },
             "require": {
                 "elyar/personal-laravel-helpers": "v0.0.2",
@@ -6082,7 +6082,7 @@
             "dist": {
                 "type": "path",
                 "url": "../telegram-bot-essentials",
-                "reference": "f94f6ac5892f2f020e208a56fd000861c90bdd98"
+                "reference": "e7aa7536a076681612a78fdba4510de56102703a"
             },
             "require": {
                 "elyar/personal-laravel-helpers": "^0.0.2",

@@ -7,11 +7,13 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use TelegramBotEssentials\Affiliates\Listeners\HandleInvoicePaid;
 use TelegramBotEssentials\Affiliates\Listeners\HandleInvoiceRevoked;
+use TelegramBotEssentials\Affiliates\Models\Affiliate;
 use TelegramBotEssentials\Affiliates\Telegram\CallbackQueries\Member\AffiliationQuery;
 use TelegramBotEssentials\Affiliates\Telegram\StateAnswers\Member\AffiliationAnswer;
 use TelegramBotEssentials\Billing\Events\InvoicePaid;
 use TelegramBotEssentials\Billing\Events\InvoiceRevoked;
 use TelegramBotEssentials\Essence\Exceptions\LogicException;
+use TelegramBotEssentials\Essence\Models\BotUser;
 use TelegramBotEssentials\Settings\DTOs\Setting;
 use TelegramBotEssentials\Settings\Enums\SettingType;
 
@@ -45,6 +47,14 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
         Event::listen(InvoiceRevoked::class, HandleInvoiceRevoked::class);
 
         $this->addSettings();
+
+        BotUser::resolveRelationUsing('affiliate', function (BotUser $user) {
+            return $user->hasOne(
+                Affiliate::class,
+                'bot_user_id',
+                'id'
+            );
+        });
     }
 
     protected function registerPublishing(): void

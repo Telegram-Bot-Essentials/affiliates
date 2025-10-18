@@ -2,6 +2,7 @@
 
 namespace TelegramBotEssentials\Affiliates\Telegram\ReplyKeys\Member;
 
+use TelegramBotEssentials\Affiliates\Telegram\Features\Member\AffiliationFeature;
 use TelegramBotEssentials\Essence\Enums\Roles;
 use TelegramBotEssentials\Essence\Telegram\ReplyKeys\ReplyKey;
 
@@ -20,7 +21,7 @@ class AffiliationKey extends ReplyKey
 
     public function handle(): void
     {
-        debugMessage('Affiliation Program');
+        AffiliationFeature::menu()->send();
         // Logic to execute
     }
 }
