@@ -21,6 +21,6 @@ class Affiliate extends Model
 
     public function referrals(): HasMany
     {
-        return $this->hasMany(BotUser::class);
+        return $this->hasMany(Referral::class);
     }
 }
