@@ -5,13 +5,15 @@ namespace TelegramBotEssentials\Affiliates;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
+use TelegramBotEssentials\Affiliates\Listeners\HandleInvoicePaid;
+use TelegramBotEssentials\Affiliates\Listeners\HandleInvoiceRevoked;
 use TelegramBotEssentials\Affiliates\Telegram\CallbackQueries\Member\AffiliationQuery;
 use TelegramBotEssentials\Affiliates\Telegram\StateAnswers\Member\AffiliationAnswer;
+use TelegramBotEssentials\Billing\Events\InvoicePaid;
+use TelegramBotEssentials\Billing\Events\InvoiceRevoked;
 use TelegramBotEssentials\Essence\Exceptions\LogicException;
 use TelegramBotEssentials\Settings\DTOs\Setting;
 use TelegramBotEssentials\Settings\Enums\SettingType;
-use TelegramBotEssentials\Billing\Events\InvoicePaid;
-use TelegramBotEssentials\Affiliates\Listeners\HandleInvoicePaid;
 
 class TbeAffiliatesServiceProvider extends ServiceProvider
 {
@@ -39,10 +41,8 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
             AffiliationAnswer::class
         ]);
 
-        Event::listen(
-            InvoicePaid::class,
-            HandleInvoicePaid::class,
-        );
+        Event::listen(InvoicePaid::class, HandleInvoicePaid::class);
+        Event::listen(InvoiceRevoked::class, HandleInvoiceRevoked::class);
 
         $this->addSettings();
     }
