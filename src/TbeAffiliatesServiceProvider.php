@@ -70,13 +70,13 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
     {
         settings()->addSetting(new Setting(
             key: 'affiliates',
-            label: 'Affiliates',
+            label: fn () => __('tbe-affiliates::settings.labels.affiliates'),
             type: SettingType::DIRECTORY,
         ));
 
         settings()->addSetting(new Setting(
             key: 'affiliates.affiliates_status',
-            label: 'Status',
+            label: fn () => __('tbe-affiliates::settings.labels.status'),
             type: SettingType::DIRECTORY,
         ));
     }
