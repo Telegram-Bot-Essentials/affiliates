@@ -9,6 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use TelegramBotEssentials\Affiliates\Models\AffiliateTransaction;
 use TelegramBotEssentials\Affiliates\Models\Referral;
 use TelegramBotEssentials\Billing\Events\InvoicePaid;
+use TelegramBotEssentials\UserWallet\Models\CreditOrder;
 
 class HandleInvoicePaid implements ShouldQueue
 {
@@ -21,6 +22,13 @@ class HandleInvoicePaid implements ShouldQueue
         $event->context->apply();
 
         if (!settings()->get('affiliates.affiliates_status')) {
+            return;
+        }
+
+        // Wallet top-ups aren't a sale — paying commission on money a user
+        // is simply moving into their own wallet would let a referred user
+        // top up and instantly hand their referrer a cut of nothing bought.
+        if ($event->invoice->payable instanceof CreditOrder) {
             return;
         }
 
