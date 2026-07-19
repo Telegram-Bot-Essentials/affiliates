@@ -8,20 +8,24 @@ use TelegramBotEssentials\Essence\Telegram\ReplyKeys\ReplyKey;
 
 class AffiliationKey extends ReplyKey
 {
-    protected string $text = 'Affiliation';
+    protected string $text = '';
     protected int $perm = Roles::MEMBER->value;
-    protected string $response = 'Affiliation executed successfully.';
+    protected string $response = '';
 
     public function __construct()
     {
-        // Multilingual translations
-         $this->text = __('Affiliation Program');
-        // $this->response = __('');
+        $this->text = __('tbe-affiliates::affiliation.reply_key');
     }
 
     public function handle(): void
     {
+        dependsOn(settings()->get('affiliates.affiliates_status'));
+
         AffiliationFeature::menu()->send();
-        // Logic to execute
+    }
+
+    public function isEnabled(): bool
+    {
+        return (bool) settings()->get('affiliates.affiliates_status');
     }
 }

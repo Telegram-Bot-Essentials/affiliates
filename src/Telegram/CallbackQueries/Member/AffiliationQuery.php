@@ -11,23 +11,17 @@ class AffiliationQuery extends CallbackQuery
     protected string $type = 'AFFILIATION';
     protected int $perm = Roles::MEMBER->value;
 
-    public function activate(): void
-    {
-        if (wHook()->user()->affiliate) {
-            return;
-        }
-        wHook()->user()->affiliate()->create([
-            'referral_code' => uniqid()
-        ]);
-        AffiliationFeature::menu()->update();
-    }
-
     public function getInviteLink(): void
     {
+        dependsOn(settings()->get('affiliates.affiliates_status'));
+
+        $affiliate = wHook()->user()->affiliate;
+
         wHook()->api()->sendMessage([
             'chat_id' => wHook()->user()->telegramUser->peer_id,
-            'text' => wHook()->user()->affiliate->referral_code,
-            'reply_markup' => wHook()->user()->getKeyboard()
+            'text' => __('tbe-affiliates::affiliation.share.text', [
+                'link' => AffiliationFeature::referralLink($affiliate->referral_code),
+            ]),
         ]);
         $this->answer();
     }
