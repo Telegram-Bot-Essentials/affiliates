@@ -2,6 +2,7 @@
 
 namespace TelegramBotEssentials\Affiliates\Telegram\Features\Member;
 
+use Brick\Math\BigDecimal;
 use Telegram\Bot\Keyboard\Keyboard;
 use TelegramBotEssentials\Affiliates\Models\AffiliateTransaction;
 use TelegramBotEssentials\Essence\Telegram\TelegramResponse;
@@ -27,10 +28,18 @@ class AffiliationFeature
             ->sum('amount');
 
         $text = __('tbe-affiliates::affiliation.menu.text', [
+            'percentage' => (string) settings()->get('affiliates.share_percentage'),
             'link' => $link,
             'referralsCount' => $referralsCount,
             'totalEarned' => currency()->priceFormat($totalEarned),
         ]);
+
+        $referrerBonus = BigDecimal::of((string) settings()->get('affiliates.referrer_signup_bonus'));
+        if ($referrerBonus->isPositive()) {
+            $text .= __('tbe-affiliates::affiliation.menu.referrer_bonus_line', [
+                'amount' => currency()->priceFormat($referrerBonus),
+            ]);
+        }
 
         $replyMarkup = Keyboard::make()->inline();
         $replyMarkup->row([
@@ -52,5 +61,22 @@ class AffiliationFeature
         $botUsername = wHook()->api()->getMe()->username;
 
         return "https://t.me/{$botUsername}?start={$referralCode}";
+    }
+
+    public static function shareText(string $referralCode): string
+    {
+        $text = __('tbe-affiliates::affiliation.share.text', [
+            'botName' => wHook()->api()->getMe()->first_name,
+            'link' => self::referralLink($referralCode),
+        ]);
+
+        $referredBonus = BigDecimal::of((string) settings()->get('affiliates.referred_signup_bonus'));
+        if ($referredBonus->isPositive()) {
+            $text .= __('tbe-affiliates::affiliation.share.referred_bonus_line', [
+                'amount' => currency()->priceFormat($referredBonus),
+            ]);
+        }
+
+        return $text;
     }
 }

@@ -1,25 +1,32 @@
 <?php
 
 return [
-    'reply_key' => 'Affiliation',
+    'reply_key' => 'Affiliation 🤝',
 
     'menu' => [
-        'text' => "🤝 <b>Affiliation Program</b>"
+        'text' => "🤝 Affiliate Program"
             . "\r\n"
-            . "\r\nShare your link with friends. When someone joins through it, and every time they buy something, you earn credit in your wallet."
+            . "\r\nInvite friends and earn <b>:percentage%</b> commission on every purchase they make."
             . "\r\n"
-            . "\r\n🔗 :link"
+            . "\r\n🔗 Your link: :link"
             . "\r\n"
             . "\r\n👥 Referrals: :referralsCount"
             . "\r\n💰 Total earned: :totalEarned",
+        'referrer_bonus_line' => "\r\n🎁 Bonus per referral: :amount",
         'keys' => [
             'share' => '📤 Share my link',
         ],
     ],
 
     'share' => [
-        'text' => "Join me on this bot! 👇"
+        'text' => "🚀 Join me on :botName!"
+            . "\r\n"
+            . "\r\nIt's a shop right inside Telegram — browse and buy in a couple of taps."
+            . "\r\n"
+            . "\r\n👇 Use my link to get started:"
             . "\r\n:link",
+        'referred_bonus_line' => "\r\n"
+            . "\r\n🎁 Sign up through this link and get :amount credited to your wallet, free.",
     ],
 
     'notifications' => [

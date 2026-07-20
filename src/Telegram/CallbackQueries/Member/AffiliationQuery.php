@@ -19,9 +19,8 @@ class AffiliationQuery extends CallbackQuery
 
         wHook()->api()->sendMessage([
             'chat_id' => wHook()->user()->telegramUser->peer_id,
-            'text' => __('tbe-affiliates::affiliation.share.text', [
-                'link' => AffiliationFeature::referralLink($affiliate->referral_code),
-            ]),
+            'text' => AffiliationFeature::shareText($affiliate->referral_code),
+            'parse_mode' => 'HTML',
         ]);
         $this->answer();
     }
