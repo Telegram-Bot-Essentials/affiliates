@@ -37,6 +37,11 @@ class HandleAffiliateReferral
             return;
         }
 
+        tbeLog('affiliates')->info('Referral attributed', [
+            'referral_id' => $referral->id,
+            'affiliate_id' => $affiliate->id,
+        ]);
+
         $this->payReferrerBonus($affiliate, $referral);
         $this->payReferredBonus($referral);
     }
@@ -78,6 +83,11 @@ class HandleAffiliateReferral
                 'status' => AffiliateTransaction::STATUS_CREDITED,
             ]);
 
+            tbeLog('affiliates')->info('Referrer signup bonus credited', [
+                'referral_id' => $referral->id,
+                'amount' => (string) $amount,
+            ]);
+
             wHook()->api()->sendMessage([
                 'chat_id' => wHook()->user()->telegramUser->peer_id,
                 'text' => __('tbe-affiliates::affiliation.notifications.referrer_signup_bonus', [
@@ -105,6 +115,11 @@ class HandleAffiliateReferral
             'type' => AffiliateTransaction::TYPE_REFERRED_SIGNUP_BONUS,
             'amount' => $amount,
             'status' => AffiliateTransaction::STATUS_CREDITED,
+        ]);
+
+        tbeLog('affiliates')->info('Referred signup bonus credited', [
+            'referral_id' => $referral->id,
+            'amount' => (string) $amount,
         ]);
 
         wHook()->api()->sendMessage([

@@ -68,6 +68,12 @@ class HandleInvoicePaid implements ShouldQueue
                 'status' => AffiliateTransaction::STATUS_CREDITED,
             ]);
 
+            tbeLog('affiliates')->info('Purchase commission credited', [
+                'referral_id' => $referral->id,
+                'invoice_id' => $event->invoice->id,
+                'amount' => (string) $commission,
+            ]);
+
             wHook()->api()->sendMessage([
                 'chat_id' => wHook()->user()->telegramUser->peer_id,
                 'text' => __('tbe-affiliates::affiliation.notifications.purchase_commission', [
