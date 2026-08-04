@@ -89,6 +89,7 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
             key: 'affiliates',
             label: fn () => __('tbe-affiliates::settings.labels.affiliates'),
             type: SettingType::DIRECTORY,
+            description: fn () => __('tbe-affiliates::settings.descriptions.affiliates'),
         ));
 
         settings()->addSetting(new Setting(
@@ -96,6 +97,7 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
             label: fn () => __('tbe-affiliates::settings.labels.status'),
             type: SettingType::CHECKBOX,
             default: false,
+            description: fn () => __('tbe-affiliates::settings.descriptions.status'),
         ));
 
         settings()->addSetting(new Setting(
@@ -103,6 +105,7 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
             label: fn () => __('tbe-affiliates::settings.labels.allow_existing_users'),
             type: SettingType::CHECKBOX,
             default: false,
+            description: fn () => __('tbe-affiliates::settings.descriptions.allow_existing_users'),
         ));
 
         settings()->addSetting(new Setting(
@@ -110,6 +113,7 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
             label: fn () => __('tbe-affiliates::settings.labels.share_percentage'),
             type: SettingType::NUMBER,
             default: 10,
+            description: fn () => __('tbe-affiliates::settings.descriptions.share_percentage'),
         ));
 
         settings()->addSetting(new Setting(
@@ -117,6 +121,7 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
             label: fn () => __('tbe-affiliates::settings.labels.referrer_signup_bonus'),
             type: SettingType::NUMBER,
             default: 0,
+            description: fn () => __('tbe-affiliates::settings.descriptions.referrer_signup_bonus'),
         ));
 
         settings()->addSetting(new Setting(
@@ -124,12 +129,14 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
             label: fn () => __('tbe-affiliates::settings.labels.referred_signup_bonus'),
             type: SettingType::NUMBER,
             default: 0,
+            description: fn () => __('tbe-affiliates::settings.descriptions.referred_signup_bonus'),
         ));
 
         settings()->addSetting(new Setting(
             key: 'affiliates.share_tagline',
             label: fn () => __('tbe-affiliates::settings.labels.share_tagline'),
             type: SettingType::TEXT,
+            description: fn () => __('tbe-affiliates::settings.descriptions.share_tagline'),
         ));
     }
 }
