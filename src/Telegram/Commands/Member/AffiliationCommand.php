@@ -17,10 +17,12 @@ class AffiliationCommand extends Command
         $this->description = __('tbe-affiliates::affiliation.command_description');
     }
 
-    public function handle(): void
+    public function handle(): ?bool
     {
         dependsOn(settings()->get('affiliates.affiliates_status'));
 
         AffiliationFeature::menu()->send();
+
+        return true;
     }
 }
