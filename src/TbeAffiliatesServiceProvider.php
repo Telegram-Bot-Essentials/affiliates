@@ -125,5 +125,11 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
             type: SettingType::NUMBER,
             default: 0,
         ));
+
+        settings()->addSetting(new Setting(
+            key: 'affiliates.share_tagline',
+            label: fn () => __('tbe-affiliates::settings.labels.share_tagline'),
+            type: SettingType::TEXT,
+        ));
     }
 }

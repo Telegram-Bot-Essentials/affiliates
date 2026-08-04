@@ -8,5 +8,6 @@ return [
         'share_percentage' => 'Purchase Commission (%)',
         'referrer_signup_bonus' => 'Referrer Signup Bonus',
         'referred_signup_bonus' => 'Referred User Signup Bonus',
+        'share_tagline' => 'Share Link Tagline',
     ],
 ];

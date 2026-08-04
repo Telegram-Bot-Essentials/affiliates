@@ -19,9 +19,10 @@ return [
     ],
 
     'share' => [
+        'tagline' => "It's a shop right inside Telegram — browse and buy in a couple of taps.",
         'text' => "🚀 Join me on :botName!"
             . "\r\n"
-            . "\r\nIt's a shop right inside Telegram — browse and buy in a couple of taps."
+            . "\r\n:tagline"
             . "\r\n"
             . "\r\n👇 Use my link to get started:"
             . "\r\n:link",

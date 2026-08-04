@@ -65,8 +65,12 @@ class AffiliationFeature
 
     public static function shareText(string $referralCode): string
     {
+        $tagline = settings()->get('affiliates.share_tagline')
+            ?: __('tbe-affiliates::affiliation.share.tagline');
+
         $text = __('tbe-affiliates::affiliation.share.text', [
             'botName' => wHook()->api()->getMe()->first_name,
+            'tagline' => $tagline,
             'link' => self::referralLink($referralCode),
         ]);
 
