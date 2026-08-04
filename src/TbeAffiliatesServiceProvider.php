@@ -55,6 +55,10 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
             ],
         ]);
 
+        commandBus()->addCommands([
+            AffiliationCommand::class,
+        ]);
+
         stateAnswerBus()->addStateAnswers([
             AffiliationAnswer::class
         ]);

@@ -2,13 +2,15 @@
 
 namespace TelegramBotEssentials\Affiliates\Telegram\Commands\Member;
 
-use Telegram\Bot\Commands\Command;
 use TelegramBotEssentials\Affiliates\Telegram\Features\Member\AffiliationFeature;
+use TelegramBotEssentials\Essence\Enums\Roles;
+use TelegramBotEssentials\Essence\Telegram\Commands\Command;
 
 class AffiliationCommand extends Command
 {
     protected string $name = 'affiliation';
     protected string $description;
+    protected int $perm = Roles::MEMBER->value;
 
     public function __construct()
     {
