@@ -2,6 +2,7 @@
 
 return [
     'reply_key' => 'Affiliation 🤝',
+    'command_description' => 'View your affiliate link and earnings',
 
     'menu' => [
         'text' => "🤝 Affiliate Program"

@@ -11,6 +11,7 @@ use TelegramBotEssentials\Affiliates\Listeners\HandleInvoiceRevoked;
 use TelegramBotEssentials\Affiliates\Models\Affiliate;
 use TelegramBotEssentials\Affiliates\Models\Referral;
 use TelegramBotEssentials\Affiliates\Telegram\CallbackQueries\Member\AffiliationQuery;
+use TelegramBotEssentials\Affiliates\Telegram\Commands\Member\AffiliationCommand;
 use TelegramBotEssentials\Affiliates\Telegram\ReplyKeys\Member\AffiliationKey;
 use TelegramBotEssentials\Affiliates\Telegram\StateAnswers\Member\AffiliationAnswer;
 use TelegramBotEssentials\Billing\Events\InvoicePaid;
@@ -45,6 +46,13 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
 
         replyKeyBus()->addReplyKeys([
             AffiliationKey::class
+        ]);
+
+        config([
+            'tbe-essence.commands' => [
+                ...config('tbe-essence.commands', []),
+                AffiliationCommand::class,
+            ],
         ]);
 
         stateAnswerBus()->addStateAnswers([
