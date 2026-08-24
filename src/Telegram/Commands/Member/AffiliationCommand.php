@@ -9,13 +9,9 @@ use TelegramBotEssentials\Essence\Telegram\Commands\Command;
 class AffiliationCommand extends Command
 {
     protected string $name = 'affiliation';
-    protected string $description;
+    protected string $descriptionKey = 'tbe-affiliates::affiliation.command_description';
     protected int $perm = Roles::MEMBER->value;
 
-    public function __construct()
-    {
-        $this->description = __('tbe-affiliates::affiliation.command_description');
-    }
 
     public function handle(): ?bool
     {

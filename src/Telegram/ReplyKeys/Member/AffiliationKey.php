@@ -8,14 +8,10 @@ use TelegramBotEssentials\Essence\Telegram\ReplyKeys\ReplyKey;
 
 class AffiliationKey extends ReplyKey
 {
-    protected string $text = '';
+    protected string $textKey = 'tbe-affiliates::affiliation.reply_key';
     protected int $perm = Roles::MEMBER->value;
-    protected string $response = '';
+    protected string $responseKey = '';
 
-    public function __construct()
-    {
-        $this->text = __('tbe-affiliates::affiliation.reply_key');
-    }
 
     public function handle(): void
     {
