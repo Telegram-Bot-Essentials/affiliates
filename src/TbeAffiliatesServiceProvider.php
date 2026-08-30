@@ -24,10 +24,7 @@ use TelegramBotEssentials\Settings\Enums\SettingType;
 
 class TbeAffiliatesServiceProvider extends ServiceProvider
 {
-    public function register(): void
-    {
-
-    }
+    public function register(): void {}
 
     /**
      * @throws LogicException
@@ -37,15 +34,15 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
     {
         $this->registerPublishing();
 
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-        $this->loadTranslationsFrom(__DIR__ . '/../lang', 'tbe-affiliates');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadTranslationsFrom(__DIR__.'/../lang', 'tbe-affiliates');
 
         callbackQueryBus()->addCallbackQueries([
-            AffiliationQuery::class
+            AffiliationQuery::class,
         ]);
 
         replyKeyBus()->addReplyKeys([
-            AffiliationKey::class
+            AffiliationKey::class,
         ]);
 
         config([
@@ -60,7 +57,7 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
         ]);
 
         stateAnswerBus()->addStateAnswers([
-            AffiliationAnswer::class
+            AffiliationAnswer::class,
         ]);
 
         Event::listen(InvoicePaid::class, HandleInvoicePaid::class);
@@ -90,7 +87,7 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../lang' => resource_path('lang/vendor/tbe-affiliates'),
+                __DIR__.'/../lang' => resource_path('lang/vendor/tbe-affiliates'),
             ], 'tbe-affiliates-translations');
         }
     }

@@ -9,6 +9,7 @@ use TelegramBotEssentials\Essence\Telegram\Commands\Command;
 class AffiliationCommand extends Command
 {
     protected string $name = 'affiliation';
+
     protected int $perm = Roles::MEMBER->value;
 
     protected function description(): string

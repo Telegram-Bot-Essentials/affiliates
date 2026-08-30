@@ -26,7 +26,7 @@ class HandleInvoiceRevoked implements ShouldQueue
             ->where('status', AffiliateTransaction::STATUS_CREDITED)
             ->first();
 
-        if (!$transaction) {
+        if (! $transaction) {
             return;
         }
 

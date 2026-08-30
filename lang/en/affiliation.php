@@ -5,14 +5,14 @@ return [
     'command_description' => 'View your affiliate link and earnings',
 
     'menu' => [
-        'text' => "🤝 Affiliate Program"
-            . "\r\n"
-            . "\r\nInvite friends and earn <b>:percentage%</b> commission on every purchase they make."
-            . "\r\n"
-            . "\r\n🔗 Your link: :link"
-            . "\r\n"
-            . "\r\n👥 Referrals: :referralsCount"
-            . "\r\n💰 Total earned: :totalEarned",
+        'text' => '🤝 Affiliate Program'
+            ."\r\n"
+            ."\r\nInvite friends and earn <b>:percentage%</b> commission on every purchase they make."
+            ."\r\n"
+            ."\r\n🔗 Your link: :link"
+            ."\r\n"
+            ."\r\n👥 Referrals: :referralsCount"
+            ."\r\n💰 Total earned: :totalEarned",
         'referrer_bonus_line' => "\r\n🎁 Bonus per referral: :amount",
         'keys' => [
             'share' => '📤 Share my link',
@@ -21,14 +21,14 @@ return [
 
     'share' => [
         'tagline' => "It's a shop right inside Telegram — browse and buy in a couple of taps.",
-        'text' => "🚀 Join me on :botName!"
-            . "\r\n"
-            . "\r\n:tagline"
-            . "\r\n"
-            . "\r\n👇 Use my link to get started:"
-            . "\r\n:link",
+        'text' => '🚀 Join me on :botName!'
+            ."\r\n"
+            ."\r\n:tagline"
+            ."\r\n"
+            ."\r\n👇 Use my link to get started:"
+            ."\r\n:link",
         'referred_bonus_line' => "\r\n"
-            . "\r\n🎁 Sign up through this link and get :amount credited to your wallet, free.",
+            ."\r\n🎁 Sign up through this link and get :amount credited to your wallet, free.",
     ],
 
     'notifications' => [

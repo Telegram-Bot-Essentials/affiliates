@@ -9,12 +9,12 @@ use TelegramBotEssentials\Essence\Telegram\TelegramResponse;
 
 class AffiliationFeature
 {
-    static string $type = 'AFFILIATION';
+    public static string $type = 'AFFILIATION';
 
     public static function menu(): TelegramResponse
     {
         $affiliate = wHook()->user()->refresh()->affiliate;
-        if (!$affiliate) {
+        if (! $affiliate) {
             $affiliate = wHook()->user()->affiliate()->create([
                 'referral_code' => uniqid(),
             ]);

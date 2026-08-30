@@ -13,10 +13,13 @@ class AffiliateTransaction extends Model
     use BelongsToTenant;
 
     public const TYPE_PURCHASE_COMMISSION = 'purchase_commission';
+
     public const TYPE_REFERRER_SIGNUP_BONUS = 'referrer_signup_bonus';
+
     public const TYPE_REFERRED_SIGNUP_BONUS = 'referred_signup_bonus';
 
     public const STATUS_CREDITED = 'credited';
+
     public const STATUS_REVERSED = 'reversed';
 
     protected $guarded = [];

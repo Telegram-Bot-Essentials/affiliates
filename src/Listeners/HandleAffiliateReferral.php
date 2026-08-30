@@ -13,7 +13,7 @@ class HandleAffiliateReferral
 {
     public function handle(BotDeepLinkReceived $event): void
     {
-        if (!settings()->get('affiliates.affiliates_status')) {
+        if (! settings()->get('affiliates.affiliates_status')) {
             return;
         }
 
@@ -21,19 +21,19 @@ class HandleAffiliateReferral
         // opt in to letting existing/returning users join via the link too
         // (affiliates.allow_existing_users) — first-touch-wins either way,
         // enforced by the unique(bot_id, bot_user_id) constraint below.
-        if (!wHook()->user()->wasRecentlyCreated && !settings()->get('affiliates.allow_existing_users')) {
+        if (! wHook()->user()->wasRecentlyCreated && ! settings()->get('affiliates.allow_existing_users')) {
             return;
         }
 
         $affiliate = Affiliate::where('referral_code', $event->payload)->first();
 
-        if (!$affiliate || (int) $affiliate->bot_user_id === (int) wHook()->user()->id) {
+        if (! $affiliate || (int) $affiliate->bot_user_id === (int) wHook()->user()->id) {
             return;
         }
 
         $referral = $this->createReferral($affiliate);
 
-        if (!$referral) {
+        if (! $referral) {
             return;
         }
 
@@ -65,7 +65,7 @@ class HandleAffiliateReferral
     {
         $amount = BigDecimal::of((string) settings()->get('affiliates.referrer_signup_bonus'));
 
-        if (!$amount->isPositive()) {
+        if (! $amount->isPositive()) {
             return;
         }
 
@@ -102,7 +102,7 @@ class HandleAffiliateReferral
     {
         $amount = BigDecimal::of((string) settings()->get('affiliates.referred_signup_bonus'));
 
-        if (!$amount->isPositive()) {
+        if (! $amount->isPositive()) {
             return;
         }
 

@@ -21,7 +21,7 @@ class HandleInvoicePaid implements ShouldQueue
     {
         $event->context->apply();
 
-        if (!settings()->get('affiliates.affiliates_status')) {
+        if (! settings()->get('affiliates.affiliates_status')) {
             return;
         }
 
@@ -34,13 +34,13 @@ class HandleInvoicePaid implements ShouldQueue
 
         $referral = Referral::where('bot_user_id', wHook()->user()->id)->first();
 
-        if (!$referral) {
+        if (! $referral) {
             return;
         }
 
         $sharePercentage = BigDecimal::of((string) settings()->get('affiliates.share_percentage'));
 
-        if (!$sharePercentage->isPositive()) {
+        if (! $sharePercentage->isPositive()) {
             return;
         }
 
@@ -49,7 +49,7 @@ class HandleInvoicePaid implements ShouldQueue
             ->multipliedBy($sharePercentage)
             ->dividedBy(100, 10, RoundingMode::DOWN);
 
-        if (!$commission->isPositive()) {
+        if (! $commission->isPositive()) {
             return;
         }
 
