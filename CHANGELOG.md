@@ -1,0 +1,27 @@
+# Changelog
+
+All notable changes to this project are documented here. Format follows
+[Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Until the API
+stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
+
+## [Unreleased]
+
+## [0.0.16] - 2026-09-01
+
+### Changed
+
+- **BREAKING:** requires `telegram-bot-essentials/essence` `^0.12`. Handlers
+  are locale-lazy.
+
+### Added
+
+- `/affiliation` command (an essence `Command` subclass registered via
+  `commandBus()->addCommands()`) that opens the same menu as the reply-key
+  entry (0.0.15).
+- Pest test suite, Laravel Pint, Larastan (level max), GitHub Actions CI,
+  Laravel Workbench, `LICENSE` (MIT) and this changelog.
+
+### Removed
+
+- The `phpstan-bootstrap.php` `ExceptionHandler` recursion stub — essence's
+  handler now guards its own fallback path.

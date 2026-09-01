@@ -47,7 +47,7 @@ class HandleInvoicePaid implements ShouldQueue
         // Round down — never over-pay a commission due to rounding.
         $commission = BigDecimal::of((string) $event->invoice->price)
             ->multipliedBy($sharePercentage)
-            ->dividedBy(100, 10, RoundingMode::DOWN);
+            ->dividedBy(100, 10, RoundingMode::Down);
 
         if (! $commission->isPositive()) {
             return;

@@ -97,7 +97,7 @@ parameters:
 			path: src/Listeners/HandleInvoiceRevoked.php
 
 		-
-			message: '#^Parameter \#1 \$value of static method Brick\\Math\\BigNumber\:\:of\(\) expects Brick\\Math\\BigNumber\|float\|int\|string, mixed given\.$#'
+			message: '#^Parameter \#1 \$value of static method Brick\\Math\\BigNumber\:\:of\(\) expects Brick\\Math\\BigNumber\|int\|string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Listeners/HandleInvoiceRevoked.php
