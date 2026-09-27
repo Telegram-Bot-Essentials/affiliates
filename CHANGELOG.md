@@ -6,6 +6,13 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+### Changed
+
+- Requires essence `^0.15`, which fills the `{placeholders}` in these
+  messages.
+- Affiliate log messages name the amount, invoice and referral they are
+  about (`Commission 5000 credited for invoice #12 (referral #3)`).
+
 ## [0.0.19] - 2026-09-22
 
 ### Changed
