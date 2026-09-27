@@ -37,7 +37,7 @@ class HandleInvoiceRevoked implements ShouldQueue
 
             $transaction->update(['status' => AffiliateTransaction::STATUS_REVERSED]);
 
-            tbeLog('affiliates')->info('Purchase commission reversed', [
+            tbeLog('affiliates')->info('Commission {amount} for invoice #{invoice_id} reversed', [
                 'transaction_id' => $transaction->getKey(),
                 'invoice_id' => $transaction->invoice_id,
                 'amount' => (string) $transaction->amount,

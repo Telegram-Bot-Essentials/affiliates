@@ -37,7 +37,7 @@ class HandleAffiliateReferral
             return;
         }
 
-        tbeLog('affiliates')->info('Referral attributed', [
+        tbeLog('affiliates')->info('Joined through affiliate #{affiliate_id} (referral #{referral_id})', [
             'referral_id' => $referral->id,
             'affiliate_id' => $affiliate->id,
         ]);
@@ -83,7 +83,7 @@ class HandleAffiliateReferral
                 'status' => AffiliateTransaction::STATUS_CREDITED,
             ]);
 
-            tbeLog('affiliates')->info('Referrer signup bonus credited', [
+            tbeLog('affiliates')->info('Referrer signup bonus {amount} credited (referral #{referral_id})', [
                 'referral_id' => $referral->id,
                 'amount' => (string) $amount,
             ]);
@@ -117,7 +117,7 @@ class HandleAffiliateReferral
             'status' => AffiliateTransaction::STATUS_CREDITED,
         ]);
 
-        tbeLog('affiliates')->info('Referred signup bonus credited', [
+        tbeLog('affiliates')->info('Signup bonus {amount} credited for joining through referral #{referral_id}', [
             'referral_id' => $referral->id,
             'amount' => (string) $amount,
         ]);

@@ -68,7 +68,7 @@ class HandleInvoicePaid implements ShouldQueue
                 'status' => AffiliateTransaction::STATUS_CREDITED,
             ]);
 
-            tbeLog('affiliates')->info('Purchase commission credited', [
+            tbeLog('affiliates')->info('Commission {amount} credited for invoice #{invoice_id} (referral #{referral_id})', [
                 'referral_id' => $referral->id,
                 'invoice_id' => $event->invoice->id,
                 'amount' => (string) $commission,
