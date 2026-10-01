@@ -58,13 +58,6 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
             AffiliatesKey::class,
         ]);
 
-        config([
-            'tbe-essence.commands' => [
-                ...config('tbe-essence.commands', []),
-                AffiliationCommand::class,
-            ],
-        ]);
-
         commandBus()->addCommands([
             AffiliationCommand::class,
         ]);
