@@ -6,6 +6,17 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+### Removed
+
+- No longer appends `AffiliationCommand` to `tbe-essence.commands`. essence
+  builds the Telegram menu from the command bus, where the command is still
+  registered.
+
+### Changed
+
+- Requires essence `^0.16.2`, the first release that builds the menu from
+  the command bus; on older essence `/affiliation` would drop out of it.
+
 ## [0.0.26] - 2026-10-01
 
 ### Fixed
