@@ -20,6 +20,6 @@ it('registers the affiliates settings tree', function () {
 });
 
 it('registers the affiliation command with essence', function () {
-    expect(config('tbe-essence.commands'))
-        ->toContain(AffiliationCommand::class);
+    expect(commandBus()->getCommands()['affiliation'] ?? null)
+        ->toBeInstanceOf(AffiliationCommand::class);
 });
