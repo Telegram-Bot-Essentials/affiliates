@@ -10,8 +10,10 @@ use TelegramBotEssentials\Affiliates\Listeners\HandleInvoicePaid;
 use TelegramBotEssentials\Affiliates\Listeners\HandleInvoiceRevoked;
 use TelegramBotEssentials\Affiliates\Models\Affiliate;
 use TelegramBotEssentials\Affiliates\Models\Referral;
+use TelegramBotEssentials\Affiliates\Telegram\CallbackQueries\Admin\AffiliatesQuery;
 use TelegramBotEssentials\Affiliates\Telegram\CallbackQueries\Member\AffiliationQuery;
 use TelegramBotEssentials\Affiliates\Telegram\Commands\Member\AffiliationCommand;
+use TelegramBotEssentials\Affiliates\Telegram\Features\Admin\AffiliatesFeature;
 use TelegramBotEssentials\Affiliates\Telegram\ReplyKeys\Member\AffiliationKey;
 use TelegramBotEssentials\Affiliates\Telegram\StateAnswers\Member\AffiliationAnswer;
 use TelegramBotEssentials\Billing\Events\InvoicePaid;
@@ -21,6 +23,9 @@ use TelegramBotEssentials\Essence\Exceptions\LogicException;
 use TelegramBotEssentials\Essence\Models\BotUser;
 use TelegramBotEssentials\Settings\DTOs\Setting;
 use TelegramBotEssentials\Settings\Enums\SettingType;
+use TelegramBotEssentials\UserManagement\DTOs\UserSection;
+use TelegramBotEssentials\UserManagement\Enums\SectionMode;
+use TelegramBotEssentials\UserManagement\Services\UserManagementSections;
 
 class TbeAffiliatesServiceProvider extends ServiceProvider
 {
@@ -39,6 +44,7 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
 
         callbackQueryBus()->addCallbackQueries([
             AffiliationQuery::class,
+            AffiliatesQuery::class,
         ]);
 
         replyKeyBus()->addReplyKeys([
@@ -65,6 +71,7 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
         Event::listen(BotDeepLinkReceived::class, HandleAffiliateReferral::class);
 
         $this->addSettings();
+        $this->registerUserSection();
 
         BotUser::resolveRelationUsing('affiliate', function (BotUser $user) {
             return $user->hasOne(
@@ -81,6 +88,32 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
                 'id'
             );
         });
+    }
+
+    /**
+     * Optional: user-management is not a dependency of this package. With it
+     * installed, the profile of a member who refers or was referred links to
+     * their affiliation.
+     */
+    private function registerUserSection(): void
+    {
+        if (! class_exists(UserSection::class)) {
+            return;
+        }
+
+        app(UserManagementSections::class)->addSection(new UserSection(
+            key: 'affiliation',
+            order: 25,
+            mode: SectionMode::BUTTON,
+            label: fn (BotUser $user) => __('tbe-affiliates::admin.section.label', [
+                'count' => Referral::query()
+                    ->whereIn('affiliate_id', Affiliate::query()->where('bot_user_id', $user->id)->select('id'))
+                    ->count(),
+            ]),
+            target: fn (BotUser $user) => encodeCallback(AffiliatesFeature::$type, 'user', [$user->id]),
+            active: fn (BotUser $user) => Affiliate::query()->where('bot_user_id', $user->id)->exists()
+                || Referral::query()->where('bot_user_id', $user->id)->exists(),
+        ));
     }
 
     protected function registerPublishing(): void
