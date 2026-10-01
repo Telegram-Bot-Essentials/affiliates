@@ -2,7 +2,6 @@
 
 namespace TelegramBotEssentials\Affiliates\Telegram\Features\Admin;
 
-use Telegram\Bot\Keyboard\Button;
 use Telegram\Bot\Keyboard\Keyboard;
 use TelegramBotEssentials\Affiliates\Models\Affiliate;
 use TelegramBotEssentials\Affiliates\Models\AffiliateTransaction;
@@ -83,11 +82,12 @@ class AffiliatesFeature
         };
     }
 
-    private static function profileButton(string $text, BotUser $botUser): array|string|Button
+    /** @return array<string, string> */
+    private static function profileButton(string $text, BotUser $botUser): array
     {
-        return Keyboard::inlineButton([
+        return [
             'text' => $text,
             'callback_data' => encodeCallback('BOTUSERS', 'show', [$botUser->id]),
-        ]);
+        ];
     }
 }
