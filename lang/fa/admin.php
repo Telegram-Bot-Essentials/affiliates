@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'reply_key' => 'همکاران 🤝',
+    'reply_key' => 'زیر مجموعه گیری 👥',
     'menu' => [
         'text' => [
-            'header' => "🤝 <b>برنامه همکاری در فروش</b>\r\n👥 همکاران: :affiliates\r\n🔗 دعوت‌شده‌ها: :referrals\r\n💰 مجموع پرداخت‌شده: :paid",
+            'header' => "🤝 <b>برنامه زیرمجموعه‌گیری</b>\r\n👥 اعضای برنامه: :affiliates\r\n🔗 دعوت‌شده‌ها: :referrals\r\n💰 مجموع پرداخت‌شده: :paid",
             'empty' => 'هنوز کسی عضو برنامه نشده است.',
             'waitingPage' => '⌛ در انتظار شماره صفحه.',
             'enterPage' => '🔢 شماره صفحه را وارد کنید:',
@@ -20,14 +20,14 @@ return [
     ],
     'sorts' => [
         'referrals' => 'تعداد دعوت‌شده‌ها',
-        'earnings' => 'درآمد همکاری',
+        'earnings' => 'درآمد زیرمجموعه‌گیری',
     ],
     'section' => [
-        'label' => '🤝 همکاری در فروش (:count)',
+        'label' => '🤝 زیرمجموعه‌گیری (:count)',
     ],
     'show' => [
         'text' => [
-            'header' => '🤝 همکاری در فروش <b>:user</b>',
+            'header' => '🤝 زیرمجموعه‌گیری <b>:user</b>',
             'referredBy' => '↩️ معرف: :referrer',
             'code' => '🔗 کد معرفی: <code>:code</code>',
             'referrals' => '👥 دعوت‌شده‌ها: :count',
@@ -36,7 +36,7 @@ return [
         ],
         'keys' => [
             'referrer' => '↩️ معرف: :user',
-            'backToList' => '🔙 بازگشت به همکاران',
+            'backToList' => '🔙 بازگشت به زیرمجموعه‌گیری',
             'back' => '🔙 بازگشت به نمایه کاربر',
         ],
     ],
