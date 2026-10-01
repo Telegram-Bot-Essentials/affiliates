@@ -6,6 +6,10 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+### Added
+
+- An admin view of a member's affiliation (who referred them, their code, referrals and earnings), reached from an "Affiliation" button on the member's profile when user-management is installed.
+
 ## [0.0.22] - 2026-10-01
 
 ### Changed
