@@ -6,6 +6,8 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+## [0.0.25] - 2026-10-01
+
 ### Added
 
 - An admin "Affiliates" menu: every affiliate with their referral count and earnings, the program's totals on top, sortable by either, with a page jump. A row opens the member's affiliation screen, which goes back to the list.
