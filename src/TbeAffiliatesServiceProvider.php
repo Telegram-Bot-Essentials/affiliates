@@ -3,18 +3,22 @@
 namespace TelegramBotEssentials\Affiliates;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use TelegramBotEssentials\Affiliates\Listeners\HandleAffiliateReferral;
 use TelegramBotEssentials\Affiliates\Listeners\HandleInvoicePaid;
 use TelegramBotEssentials\Affiliates\Listeners\HandleInvoiceRevoked;
 use TelegramBotEssentials\Affiliates\Models\Affiliate;
+use TelegramBotEssentials\Affiliates\Models\AffiliateTransaction;
 use TelegramBotEssentials\Affiliates\Models\Referral;
 use TelegramBotEssentials\Affiliates\Telegram\CallbackQueries\Admin\AffiliatesQuery;
 use TelegramBotEssentials\Affiliates\Telegram\CallbackQueries\Member\AffiliationQuery;
 use TelegramBotEssentials\Affiliates\Telegram\Commands\Member\AffiliationCommand;
 use TelegramBotEssentials\Affiliates\Telegram\Features\Admin\AffiliatesFeature;
+use TelegramBotEssentials\Affiliates\Telegram\ReplyKeys\Admin\AffiliatesKey;
 use TelegramBotEssentials\Affiliates\Telegram\ReplyKeys\Member\AffiliationKey;
+use TelegramBotEssentials\Affiliates\Telegram\StateAnswers\Admin\AffiliatesAnswer;
 use TelegramBotEssentials\Affiliates\Telegram\StateAnswers\Member\AffiliationAnswer;
 use TelegramBotEssentials\Billing\Events\InvoicePaid;
 use TelegramBotEssentials\Billing\Events\InvoiceRevoked;
@@ -23,8 +27,10 @@ use TelegramBotEssentials\Essence\Exceptions\LogicException;
 use TelegramBotEssentials\Essence\Models\BotUser;
 use TelegramBotEssentials\Settings\DTOs\Setting;
 use TelegramBotEssentials\Settings\Enums\SettingType;
+use TelegramBotEssentials\UserManagement\DTOs\BotUserSort;
 use TelegramBotEssentials\UserManagement\DTOs\UserSection;
 use TelegramBotEssentials\UserManagement\Enums\SectionMode;
+use TelegramBotEssentials\UserManagement\Services\BotUserSorts;
 use TelegramBotEssentials\UserManagement\Services\UserManagementSections;
 
 class TbeAffiliatesServiceProvider extends ServiceProvider
@@ -49,6 +55,7 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
 
         replyKeyBus()->addReplyKeys([
             AffiliationKey::class,
+            AffiliatesKey::class,
         ]);
 
         config([
@@ -64,6 +71,7 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
 
         stateAnswerBus()->addStateAnswers([
             AffiliationAnswer::class,
+            AffiliatesAnswer::class,
         ]);
 
         Event::listen(InvoicePaid::class, HandleInvoicePaid::class);
@@ -114,6 +122,54 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
             active: fn (BotUser $user) => Affiliate::query()->where('bot_user_id', $user->id)->exists()
                 || Referral::query()->where('bot_user_id', $user->id)->exists(),
         ));
+
+        $sorts = app(BotUserSorts::class);
+
+        $sorts->addSort(new BotUserSort(
+            key: 'referrals',
+            label: fn () => __('tbe-affiliates::admin.sorts.referrals'),
+            apply: fn (Builder $query, string $direction) => $direction === 'asc'
+                ? $query->orderBy(self::referralCount())
+                : $query->orderByDesc(self::referralCount()),
+            display: fn (BotUser $user) => (string) Referral::query()
+                ->whereIn('affiliate_id', Affiliate::query()->where('bot_user_id', $user->id)->select('id'))
+                ->count(),
+        ));
+
+        $sorts->addSort(new BotUserSort(
+            key: 'affiliate_earnings',
+            label: fn () => __('tbe-affiliates::admin.sorts.earnings'),
+            apply: fn (Builder $query, string $direction) => $direction === 'asc'
+                ? $query->orderBy(self::earnings())
+                : $query->orderByDesc(self::earnings()),
+            display: fn (BotUser $user) => currency()->priceFormat((string) AffiliatesFeature::credited()
+                ->where('recipient_bot_user_id', $user->id)
+                ->sum('amount')),
+        ));
+    }
+
+    /**
+     * How many members the outer bot_users row referred, as a subquery.
+     *
+     * @return Builder<Referral>
+     */
+    private static function referralCount(): Builder
+    {
+        return Referral::query()
+            ->selectRaw('COUNT(*)')
+            ->whereIn('affiliate_id', Affiliate::query()->select('id')->whereColumn('bot_user_id', 'bot_users.id'));
+    }
+
+    /**
+     * What the outer bot_users row was credited, as a subquery.
+     *
+     * @return Builder<AffiliateTransaction>
+     */
+    private static function earnings(): Builder
+    {
+        return AffiliatesFeature::credited()
+            ->selectRaw('COALESCE(SUM(amount), 0)')
+            ->whereColumn('recipient_bot_user_id', 'bot_users.id');
     }
 
     protected function registerPublishing(): void
