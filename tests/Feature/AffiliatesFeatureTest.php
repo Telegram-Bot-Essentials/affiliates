@@ -5,6 +5,7 @@ declare(strict_types=1);
 use TelegramBotEssentials\Affiliates\Models\Affiliate;
 use TelegramBotEssentials\Affiliates\Models\Referral;
 use TelegramBotEssentials\Affiliates\Telegram\Features\Admin\AffiliatesFeature;
+use TelegramBotEssentials\Essence\Models\BotUser;
 
 beforeEach(function () {
     $this->bot = $this->makeBot();
@@ -47,4 +48,38 @@ it('shows a referred member who referred them', function () {
 
 it('says so when a member has no affiliation at all', function () {
     expect(AffiliatesFeature::show($this->loner)->text)->toContain(__('tbe-affiliates::admin.show.text.noAffiliate'));
+});
+
+it('lists every affiliate with the totals on top', function () {
+    $response = AffiliatesFeature::menu();
+
+    expect($response->text)->toContain('1')
+        ->and(($this->callbacks)($response))->toContain(encodeCallback('AFFILIATES', 'user', [$this->referrer->id, 1, 'earned', 'desc']));
+});
+
+it('sorts the overview by referrals and flips the direction', function () {
+    $other = $this->makeBotUser($this->bot, 1004);
+    $quiet = Affiliate::create(['bot_id' => $this->bot->id, 'bot_user_id' => $other->id, 'referral_code' => 'QUIET']);
+
+    $ids = fn (string $direction) => AffiliatesFeature::listQuery()->orderBy('referrals_count', $direction)->pluck('bot_user_id')->all();
+
+    expect($ids('desc'))->toBe([$this->referrer->id, $other->id])
+        ->and($ids('asc'))->toBe([$other->id, $this->referrer->id])
+        ->and($quiet->id)->not->toBeNull();
+});
+
+it('goes back to the overview page the screen was opened from', function () {
+    $callbacks = ($this->callbacks)(AffiliatesFeature::show($this->referrer, 2, 'referrals', 'asc'));
+
+    expect($callbacks)->toContain(encodeCallback('AFFILIATES', 'menu', [2, 0, 'referrals', 'asc']));
+});
+
+it('sorts the user list by referrals and earnings', function () {
+    $sorts = botUserSorts();
+    $ordered = fn (string $key, string $direction) => $sorts->apply($key, BotUser::query(), $direction)->pluck('id')->all();
+
+    expect($ordered('referrals', 'desc')[0])->toBe($this->referrer->id)
+        ->and($sorts->getSort('referrals')->displayValue($this->referrer))->toBe('1')
+        ->and($sorts->getSort('affiliate_earnings'))->not->toBeNull()
+        ->and($ordered('affiliate_earnings', 'desc'))->toHaveCount(3);
 });
