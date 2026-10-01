@@ -6,6 +6,12 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+## [0.0.26] - 2026-10-01
+
+### Fixed
+
+- The Persian admin strings call the program زیرمجموعه‌گیری, like the rest of the package.
+
 ## [0.0.25] - 2026-10-01
 
 ### Added
