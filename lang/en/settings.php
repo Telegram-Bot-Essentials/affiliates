@@ -3,12 +3,12 @@
 return [
     'labels' => [
         'affiliates' => 'Affiliates',
-        'status' => 'Affiliate Status',
-        'allow_existing_users' => 'Allow Existing Users to Join',
-        'share_percentage' => 'Purchase Commission (%)',
-        'referrer_signup_bonus' => 'Referrer Signup Bonus',
-        'referred_signup_bonus' => 'Referred User Signup Bonus',
-        'share_tagline' => 'Share Link Tagline',
+        'status' => 'Affiliate status',
+        'allow_existing_users' => 'Allow existing users to join',
+        'share_percentage' => 'Purchase commission (%)',
+        'referrer_signup_bonus' => 'Referrer signup bonus',
+        'referred_signup_bonus' => 'Referred user signup bonus',
+        'share_tagline' => 'Share link tagline',
     ],
 
     'descriptions' => [
