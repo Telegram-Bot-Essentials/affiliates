@@ -48,7 +48,7 @@ class HandleInvoiceRevoked implements ShouldQueue
                 'text' => __('tbe-affiliates::affiliation.notifications.purchase_commission_reversed', [
                     'amount' => currency()->priceFormat($transaction->amount),
                 ]),
-                'reply_markup' => wHook()->user()->getKeyboard(),
+                'reply_markup' => replyKeyboard(),
             ]);
         });
     }

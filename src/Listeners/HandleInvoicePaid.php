@@ -79,7 +79,7 @@ class HandleInvoicePaid implements ShouldQueue
                 'text' => __('tbe-affiliates::affiliation.notifications.purchase_commission', [
                     'amount' => currency()->priceFormat($commission),
                 ]),
-                'reply_markup' => wHook()->user()->getKeyboard(),
+                'reply_markup' => replyKeyboard(),
             ]);
         });
     }

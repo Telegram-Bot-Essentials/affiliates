@@ -93,7 +93,7 @@ class HandleAffiliateReferral
                 'text' => __('tbe-affiliates::affiliation.notifications.referrer_signup_bonus', [
                     'amount' => currency()->priceFormat($amount),
                 ]),
-                'reply_markup' => wHook()->user()->getKeyboard(),
+                'reply_markup' => replyKeyboard(),
             ]);
         });
     }
@@ -127,7 +127,7 @@ class HandleAffiliateReferral
             'text' => __('tbe-affiliates::affiliation.notifications.referred_signup_bonus', [
                 'amount' => currency()->priceFormat($amount),
             ]),
-            'reply_markup' => wHook()->user()->getKeyboard(),
+            'reply_markup' => replyKeyboard(),
         ]);
     }
 }
