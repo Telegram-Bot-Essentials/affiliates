@@ -48,6 +48,8 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadTranslationsFrom(__DIR__.'/../lang', 'tbe-affiliates');
 
+        permissionRegistry()->register('affiliates.manage', fn () => __('tbe-affiliates::permissions.manage'), 'affiliates');
+
         callbackQueryBus()->addCallbackQueries([
             AffiliationQuery::class,
             AffiliatesQuery::class,
