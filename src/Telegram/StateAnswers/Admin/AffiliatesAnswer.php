@@ -26,7 +26,7 @@ class AffiliatesAnswer extends StateAnswer
 
         $data = AffiliatesFeature::menu(intval($page), sort: $sort, direction: $direction);
 
-        wHook()->user()->changeState();
+        wHook()->conversation()->changeState();
         wHook()->api()->sendMessage([
             'chat_id' => wHook()->user()->telegramUser->peer_id,
             'text' => __('tbe-affiliates::admin.menu.text.pageLoaded', ['page' => $page]),
