@@ -26,7 +26,7 @@ class AffiliatesQuery extends CallbackQuery
     {
         $messageMeta = MessageMeta::makeWithCurrentMessage();
         $messageMeta->lockAction(__('tbe-affiliates::admin.menu.text.waitingPage'));
-        wHook()->user()->changeState(encodeAnswerState($this->type, 'setMenuPage', [
+        wHook()->conversation()->changeState(encodeAnswerState($this->type, 'setMenuPage', [
             'message_meta_id' => $messageMeta->id,
             'sort' => $sort,
             'direction' => $direction,
