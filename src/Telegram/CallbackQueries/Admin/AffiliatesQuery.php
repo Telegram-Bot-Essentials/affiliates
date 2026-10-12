@@ -3,7 +3,6 @@
 namespace TelegramBotEssentials\Affiliates\Telegram\CallbackQueries\Admin;
 
 use TelegramBotEssentials\Affiliates\Telegram\Features\Admin\AffiliatesFeature;
-use TelegramBotEssentials\Essence\Enums\Roles;
 use TelegramBotEssentials\Essence\Exceptions\InvalidPageNumber;
 use TelegramBotEssentials\Essence\Models\BotUser;
 use TelegramBotEssentials\Essence\Models\MessageMeta;
@@ -13,7 +12,7 @@ class AffiliatesQuery extends CallbackQuery
 {
     protected string $type = 'AFFILIATES';
 
-    protected int $perm = Roles::ADMIN->value;
+    protected ?string $permission = 'affiliates.manage';
 
     /**
      * @throws InvalidPageNumber
@@ -35,7 +34,7 @@ class AffiliatesQuery extends CallbackQuery
         wHook()->api()->sendMessage([
             'chat_id' => wHook()->user()->telegramUser->peer_id,
             'text' => __('tbe-affiliates::admin.menu.text.enterPage'),
-            'reply_markup' => wHook()->user()->getKeyboard(),
+            'reply_markup' => replyKeyboard(),
         ]);
     }
 
