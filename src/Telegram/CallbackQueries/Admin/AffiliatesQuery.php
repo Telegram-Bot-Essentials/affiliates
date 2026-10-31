@@ -12,7 +12,7 @@ class AffiliatesQuery extends CallbackQuery
 {
     protected string $type = 'AFFILIATES';
 
-    protected ?string $permission = 'affiliates.manage';
+    protected ?string $ability = 'affiliates.manage';
 
     /**
      * @throws InvalidPageNumber
