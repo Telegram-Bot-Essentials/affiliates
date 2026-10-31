@@ -12,7 +12,7 @@ class AffiliatesAnswer extends StateAnswer
 {
     protected string $type = 'AFFILIATES';
 
-    protected ?string $permission = 'affiliates.manage';
+    protected ?string $ability = 'affiliates.manage';
 
     protected array $allowedFields = [
         AllowableFields::TEXT->value,
