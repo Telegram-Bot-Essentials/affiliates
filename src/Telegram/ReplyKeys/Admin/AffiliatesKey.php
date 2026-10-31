@@ -7,7 +7,7 @@ use TelegramBotEssentials\Essence\Telegram\ReplyKeys\ReplyKey;
 
 class AffiliatesKey extends ReplyKey
 {
-    protected ?string $permission = 'affiliates.manage';
+    protected ?string $ability = 'affiliates.manage';
 
     protected function text(): string
     {
