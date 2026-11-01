@@ -19,7 +19,7 @@ class AffiliationTestStartCommand extends Command
 }
 
 beforeEach(function () {
-    config(['tbe-essence.groups.enabled' => true, 'tbe-essence.groups.require_approval' => false]);
+    config(['tbe-essence.groups.enabled' => true]);
 
     $this->bot = $this->makeBot();
     $this->user = $this->makeBotUser($this->bot, 4001);
