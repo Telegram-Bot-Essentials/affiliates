@@ -21,7 +21,7 @@ class HandleAffiliateReferral
         // opt in to letting existing/returning users join via the link too
         // (affiliates.allow_existing_users) — first-touch-wins either way,
         // enforced by the unique(bot_id, bot_user_id) constraint below.
-        if (! wHook()->user()->wasRecentlyCreated && ! settings()->get('affiliates.allow_existing_users')) {
+        if (! wHook()->user()->isNewToPrivateChat() && ! settings()->get('affiliates.allow_existing_users')) {
             return;
         }
 
