@@ -6,6 +6,8 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+## [0.0.33] - 2026-11-01
+
 ### Added
 
 - `/affiliation` runs in groups too, and answers there with a link to the
