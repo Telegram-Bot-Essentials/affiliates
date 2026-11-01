@@ -145,12 +145,6 @@ parameters:
 			path: src/Models/Referral.php
 
 		-
-			message: '#^Only iterables can be unpacked, mixed given\.$#'
-			identifier: arrayUnpacking.nonIterable
-			count: 1
-			path: src/TbeAffiliatesServiceProvider.php
-
-		-
 			message: '#^Cannot access property \$peer_id on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
 			identifier: property.nonObject
 			count: 1
