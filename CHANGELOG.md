@@ -11,6 +11,10 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 - `/affiliation` runs in groups too, and answers there with a link to the
   private chat rather than show earnings. Needs essence's `continueInPrivate()`.
 
+### Fixed
+
+- Someone first met in a group counts as new when they arrive by referral link.
+
 ## [0.0.32] - 2026-11-01
 
 ### Added
