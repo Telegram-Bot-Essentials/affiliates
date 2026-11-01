@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use TelegramBotEssentials\Affiliates\Models\Affiliate;
+use TelegramBotEssentials\Affiliates\Models\Referral;
 use TelegramBotEssentials\Essence\Telegram\Commands\Command;
 
 const AFFILIATION_GROUP = -100333;
@@ -51,4 +53,26 @@ it('opens the menu from the deep link and ignores others', function () {
 
     $this->postWebhookUpdate($this->bot, $this->makeMessageUpdate('/start open_affiliation', 4001))->assertOk();
     $this->assertTelegramSent(fn ($request) => str_ends_with($request->url(), '/sendMessage') && (int) $request['chat_id'] === 4001);
+});
+
+it('attributes someone first met in a group when they arrive by referral link', function () {
+    commandBus()->addCommand(AffiliationTestStartCommand::class);
+    $referrer = $this->makeBotUser($this->bot, 4100);
+    $affiliate = Affiliate::create(['bot_id' => $this->bot->id, 'bot_user_id' => $referrer->id, 'referral_code' => 'FRIEND']);
+
+    $this->postWebhookUpdate($this->bot, $this->inGroupChat($this->makeMessageUpdate('/affiliation', 4200), AFFILIATION_GROUP))->assertOk();
+    $this->postWebhookUpdate($this->bot, $this->makeMessageUpdate('/start FRIEND', 4200))->assertOk();
+
+    expect(Referral::where('affiliate_id', $affiliate->id)->count())->toBe(1);
+});
+
+it('still ignores a returning user arriving by referral link', function () {
+    commandBus()->addCommand(AffiliationTestStartCommand::class);
+    $referrer = $this->makeBotUser($this->bot, 4100);
+    $affiliate = Affiliate::create(['bot_id' => $this->bot->id, 'bot_user_id' => $referrer->id, 'referral_code' => 'FRIEND']);
+    $this->makeBotUser($this->bot, 4300);
+
+    $this->postWebhookUpdate($this->bot, $this->makeMessageUpdate('/start FRIEND', 4300))->assertOk();
+
+    expect(Referral::where('affiliate_id', $affiliate->id)->count())->toBe(0);
 });
