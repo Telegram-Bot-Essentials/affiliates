@@ -9,6 +9,7 @@ use Illuminate\Support\ServiceProvider;
 use TelegramBotEssentials\Affiliates\Listeners\HandleAffiliateReferral;
 use TelegramBotEssentials\Affiliates\Listeners\HandleInvoicePaid;
 use TelegramBotEssentials\Affiliates\Listeners\HandleInvoiceRevoked;
+use TelegramBotEssentials\Affiliates\Listeners\OpenAffiliationFromDeepLink;
 use TelegramBotEssentials\Affiliates\Models\Affiliate;
 use TelegramBotEssentials\Affiliates\Models\AffiliateTransaction;
 use TelegramBotEssentials\Affiliates\Models\Referral;
@@ -70,6 +71,7 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
         Event::listen(InvoicePaid::class, HandleInvoicePaid::class);
         Event::listen(InvoiceRevoked::class, HandleInvoiceRevoked::class);
         Event::listen(BotDeepLinkReceived::class, HandleAffiliateReferral::class);
+        Event::listen(BotDeepLinkReceived::class, OpenAffiliationFromDeepLink::class);
 
         $this->addSettings();
         $this->registerUserSection();
