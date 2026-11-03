@@ -6,6 +6,8 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+## [0.0.34] - 2026-11-03
+
 ### Fixed
 
 - A referrer who blocked the bot no longer costs a new member their signup bonus:
