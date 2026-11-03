@@ -6,6 +6,13 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+### Fixed
+
+- A referrer who blocked the bot no longer costs a new member their signup bonus:
+  each bonus is its own action. Credits and their records commit together, and
+  a notice that cannot be delivered no longer fails anything. Needs essence with
+  `isolated()`.
+
 ## [0.0.33] - 2026-11-01
 
 ### Added
