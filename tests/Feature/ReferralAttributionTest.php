@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
+use Illuminate\Http\Client\Factory;
+use Illuminate\Support\Facades\Http;
 use TelegramBotEssentials\Affiliates\Listeners\HandleAffiliateReferral;
 use TelegramBotEssentials\Affiliates\Models\Affiliate;
+use TelegramBotEssentials\Affiliates\Models\AffiliateTransaction;
 use TelegramBotEssentials\Affiliates\Models\Referral;
 use TelegramBotEssentials\Essence\Events\BotDeepLinkReceived;
 use TelegramBotEssentials\Essence\Support\WebhookContext;
@@ -88,4 +91,25 @@ it('keeps the first attribution when a second code arrives', function () {
     expect(Referral::count())->toBe(1)
         ->and(Referral::sole()->affiliate_id)->toBe($this->affiliate->id)
         ->and($second->refresh()->referrals()->count())->toBe(0);
+});
+
+it('pays the new member their bonus when the referrer has blocked the bot', function () {
+    $settings = app(Settings::class);
+    $settings->set('affiliates.referrer_signup_bonus', '100');
+    $settings->set('affiliates.referred_signup_bonus', '50');
+    $referrerPeer = (int) $this->affiliate->botUser->telegram_user_peer_id;
+
+    $factory = new Factory;
+    $factory->fake(function ($request) use ($referrerPeer) {
+        return (int) ($request['chat_id'] ?? 0) === $referrerPeer
+            ? Http::response(['ok' => false, 'error_code' => 403, 'description' => 'Forbidden: bot was blocked by the user'], 403)
+            : Http::response(['ok' => true, 'result' => ['message_id' => 1, 'date' => 1, 'chat' => ['id' => 1, 'type' => 'private']]]);
+    });
+    Http::swap($factory);
+
+    arriveWith($this->affiliate->referral_code, 6060);
+
+    expect(AffiliateTransaction::query()->pluck('type')->all())
+        ->toContain(AffiliateTransaction::TYPE_REFERRER_SIGNUP_BONUS)
+        ->toContain(AffiliateTransaction::TYPE_REFERRED_SIGNUP_BONUS);
 });
