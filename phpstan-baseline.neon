@@ -7,12 +7,6 @@ parameters:
 			path: src/Listeners/HandleAffiliateReferral.php
 
 		-
-			message: '#^Cannot access property \$peer_id on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
-			identifier: property.nonObject
-			count: 2
-			path: src/Listeners/HandleAffiliateReferral.php
-
-		-
 			message: '#^Cannot cast mixed to int\.$#'
 			identifier: cast.int
 			count: 1
@@ -25,7 +19,7 @@ parameters:
 			path: src/Listeners/HandleAffiliateReferral.php
 
 		-
-			message: '#^Parameter \#1 \$user of method TelegramBotEssentials\\Essence\\Support\\Webhook\:\:runForUser\(\) expects TelegramBotEssentials\\Essence\\Models\\BotUser, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			message: '#^Parameter \$for of function isolated expects TelegramBotEssentials\\Essence\\Models\\BotUser\|null, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Listeners/HandleAffiliateReferral.php
@@ -38,12 +32,6 @@ parameters:
 
 		-
 			message: '#^Cannot access property \$botUser on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: src/Listeners/HandleInvoicePaid.php
-
-		-
-			message: '#^Cannot access property \$peer_id on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
 			identifier: property.nonObject
 			count: 1
 			path: src/Listeners/HandleInvoicePaid.php
@@ -69,12 +57,6 @@ parameters:
 		-
 			message: '#^Access to an undefined property TelegramBotEssentials\\Affiliates\\Models\\AffiliateTransaction\:\:\$invoice_id\.$#'
 			identifier: property.notFound
-			count: 1
-			path: src/Listeners/HandleInvoiceRevoked.php
-
-		-
-			message: '#^Cannot access property \$peer_id on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
-			identifier: property.nonObject
 			count: 1
 			path: src/Listeners/HandleInvoiceRevoked.php
 
