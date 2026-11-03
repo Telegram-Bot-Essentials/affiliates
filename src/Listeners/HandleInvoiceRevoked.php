@@ -5,6 +5,7 @@ namespace TelegramBotEssentials\Affiliates\Listeners;
 use Brick\Math\BigDecimal;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\DB;
 use TelegramBotEssentials\Affiliates\Models\AffiliateTransaction;
 use TelegramBotEssentials\Billing\Events\InvoiceRevoked;
 
@@ -33,9 +34,11 @@ class HandleInvoiceRevoked implements ShouldQueue
         $referrer = $transaction->recipient;
 
         wHook()->runForUser($referrer, function () use ($transaction) {
-            wallet()->adjustBalance(BigDecimal::of($transaction->amount)->negated(), allowNegative: true);
+            DB::transaction(function () use ($transaction) {
+                wallet()->adjustBalance(BigDecimal::of($transaction->amount)->negated(), allowNegative: true);
 
-            $transaction->update(['status' => AffiliateTransaction::STATUS_REVERSED]);
+                $transaction->update(['status' => AffiliateTransaction::STATUS_REVERSED]);
+            });
 
             tbeLog('affiliates')->info('Commission {amount} for invoice #{invoice_id} reversed', [
                 'transaction_id' => $transaction->getKey(),
@@ -43,13 +46,9 @@ class HandleInvoiceRevoked implements ShouldQueue
                 'amount' => (string) $transaction->amount,
             ]);
 
-            wHook()->api()->sendMessage([
-                'chat_id' => wHook()->user()->telegramUser->peer_id,
-                'text' => __('tbe-affiliates::affiliation.notifications.purchase_commission_reversed', [
-                    'amount' => currency()->priceFormat($transaction->amount),
-                ]),
-                'reply_markup' => replyKeyboard(),
-            ]);
+            notifyUser(wHook()->user(), __('tbe-affiliates::affiliation.notifications.purchase_commission_reversed', [
+                'amount' => currency()->priceFormat($transaction->amount),
+            ]));
         });
     }
 }

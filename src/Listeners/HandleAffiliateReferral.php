@@ -4,6 +4,7 @@ namespace TelegramBotEssentials\Affiliates\Listeners;
 
 use Brick\Math\BigDecimal;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 use TelegramBotEssentials\Affiliates\Models\Affiliate;
 use TelegramBotEssentials\Affiliates\Models\AffiliateTransaction;
 use TelegramBotEssentials\Affiliates\Models\Referral;
@@ -61,6 +62,11 @@ class HandleAffiliateReferral
         }
     }
 
+    /**
+     * Each bonus is its own action: a referrer who blocked the bot must not cost
+     * the new member theirs. The money and its record commit together, and being
+     * told about it is not part of that.
+     */
     private function payReferrerBonus(Affiliate $affiliate, Referral $referral): void
     {
         $amount = BigDecimal::of((string) settings()->get('affiliates.referrer_signup_bonus'));
@@ -69,33 +75,18 @@ class HandleAffiliateReferral
             return;
         }
 
-        $referrer = $affiliate->botUser;
-
-        wHook()->runForUser($referrer, function () use ($referral, $amount) {
-            wallet()->adjustBalance($amount);
-
-            AffiliateTransaction::create([
-                'bot_id' => wHook()->bot()->id,
-                'referral_id' => $referral->id,
-                'recipient_bot_user_id' => wHook()->user()->id,
-                'type' => AffiliateTransaction::TYPE_REFERRER_SIGNUP_BONUS,
-                'amount' => $amount,
-                'status' => AffiliateTransaction::STATUS_CREDITED,
-            ]);
+        isolated('pay referrer bonus of referral #'.$referral->id, function () use ($referral, $amount) {
+            $this->credit($referral, $amount, AffiliateTransaction::TYPE_REFERRER_SIGNUP_BONUS);
 
             tbeLog('affiliates')->info('Referrer signup bonus {amount} credited (referral #{referral_id})', [
                 'referral_id' => $referral->id,
                 'amount' => (string) $amount,
             ]);
 
-            wHook()->api()->sendMessage([
-                'chat_id' => wHook()->user()->telegramUser->peer_id,
-                'text' => __('tbe-affiliates::affiliation.notifications.referrer_signup_bonus', [
-                    'amount' => currency()->priceFormat($amount),
-                ]),
-                'reply_markup' => replyKeyboard(),
-            ]);
-        });
+            notifyUser(wHook()->user(), __('tbe-affiliates::affiliation.notifications.referrer_signup_bonus', [
+                'amount' => currency()->priceFormat($amount),
+            ]));
+        }, for: $affiliate->botUser);
     }
 
     private function payReferredBonus(Referral $referral): void
@@ -106,28 +97,33 @@ class HandleAffiliateReferral
             return;
         }
 
-        wallet()->adjustBalance($amount);
+        isolated('pay signup bonus of referral #'.$referral->id, function () use ($referral, $amount) {
+            $this->credit($referral, $amount, AffiliateTransaction::TYPE_REFERRED_SIGNUP_BONUS);
 
-        AffiliateTransaction::create([
-            'bot_id' => wHook()->bot()->id,
-            'referral_id' => $referral->id,
-            'recipient_bot_user_id' => wHook()->user()->id,
-            'type' => AffiliateTransaction::TYPE_REFERRED_SIGNUP_BONUS,
-            'amount' => $amount,
-            'status' => AffiliateTransaction::STATUS_CREDITED,
-        ]);
+            tbeLog('affiliates')->info('Signup bonus {amount} credited for joining through referral #{referral_id}', [
+                'referral_id' => $referral->id,
+                'amount' => (string) $amount,
+            ]);
 
-        tbeLog('affiliates')->info('Signup bonus {amount} credited for joining through referral #{referral_id}', [
-            'referral_id' => $referral->id,
-            'amount' => (string) $amount,
-        ]);
-
-        wHook()->api()->sendMessage([
-            'chat_id' => wHook()->user()->telegramUser->peer_id,
-            'text' => __('tbe-affiliates::affiliation.notifications.referred_signup_bonus', [
+            notifyUser(wHook()->user(), __('tbe-affiliates::affiliation.notifications.referred_signup_bonus', [
                 'amount' => currency()->priceFormat($amount),
-            ]),
-            'reply_markup' => replyKeyboard(),
-        ]);
+            ]));
+        });
+    }
+
+    private function credit(Referral $referral, BigDecimal $amount, string $type): void
+    {
+        DB::transaction(function () use ($referral, $amount, $type) {
+            wallet()->adjustBalance($amount);
+
+            AffiliateTransaction::create([
+                'bot_id' => wHook()->bot()->id,
+                'referral_id' => $referral->id,
+                'recipient_bot_user_id' => wHook()->user()->id,
+                'type' => $type,
+                'amount' => $amount,
+                'status' => AffiliateTransaction::STATUS_CREDITED,
+            ]);
+        });
     }
 }

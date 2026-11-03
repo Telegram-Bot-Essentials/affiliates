@@ -6,6 +6,7 @@ use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\DB;
 use TelegramBotEssentials\Affiliates\Models\AffiliateTransaction;
 use TelegramBotEssentials\Affiliates\Models\Referral;
 use TelegramBotEssentials\Billing\Events\InvoicePaid;
@@ -56,17 +57,19 @@ class HandleInvoicePaid implements ShouldQueue
         $referrer = $referral->affiliate->botUser;
 
         wHook()->runForUser($referrer, function () use ($referral, $commission, $event) {
-            wallet()->adjustBalance($commission);
+            DB::transaction(function () use ($referral, $commission, $event) {
+                wallet()->adjustBalance($commission);
 
-            AffiliateTransaction::create([
-                'bot_id' => wHook()->bot()->id,
-                'referral_id' => $referral->id,
-                'recipient_bot_user_id' => wHook()->user()->id,
-                'type' => AffiliateTransaction::TYPE_PURCHASE_COMMISSION,
-                'invoice_id' => $event->invoice->id,
-                'amount' => $commission,
-                'status' => AffiliateTransaction::STATUS_CREDITED,
-            ]);
+                AffiliateTransaction::create([
+                    'bot_id' => wHook()->bot()->id,
+                    'referral_id' => $referral->id,
+                    'recipient_bot_user_id' => wHook()->user()->id,
+                    'type' => AffiliateTransaction::TYPE_PURCHASE_COMMISSION,
+                    'invoice_id' => $event->invoice->id,
+                    'amount' => $commission,
+                    'status' => AffiliateTransaction::STATUS_CREDITED,
+                ]);
+            });
 
             tbeLog('affiliates')->info('Commission {amount} credited for invoice #{invoice_id} (referral #{referral_id})', [
                 'referral_id' => $referral->id,
@@ -74,13 +77,9 @@ class HandleInvoicePaid implements ShouldQueue
                 'amount' => (string) $commission,
             ]);
 
-            wHook()->api()->sendMessage([
-                'chat_id' => wHook()->user()->telegramUser->peer_id,
-                'text' => __('tbe-affiliates::affiliation.notifications.purchase_commission', [
-                    'amount' => currency()->priceFormat($commission),
-                ]),
-                'reply_markup' => replyKeyboard(),
-            ]);
+            notifyUser(wHook()->user(), __('tbe-affiliates::affiliation.notifications.purchase_commission', [
+                'amount' => currency()->priceFormat($commission),
+            ]));
         });
     }
 }
