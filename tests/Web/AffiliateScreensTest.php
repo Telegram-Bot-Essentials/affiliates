@@ -8,6 +8,7 @@ use TelegramBotEssentials\Affiliates\Models\AffiliateTransaction;
 use TelegramBotEssentials\Affiliates\Models\Referral;
 use TelegramBotEssentials\Essence\Models\BotUser;
 use TelegramBotEssentials\Essence\Web\WebAccounts;
+use TelegramBotEssentials\UserManagement\DTOs\UserSection;
 
 function affiliateOf(BotUser $user, string $code): Affiliate
 {
@@ -30,7 +31,8 @@ function referredBy(Affiliate $affiliate, BotUser $user, ?string $credit = null)
 beforeEach(function () {
     $this->bot = $this->makeBot(['bot_owner_peer_id' => 9201]);
     $this->admin = $this->grant($this->makeBotUser($this->bot, 9201), 'affiliates.manage', 'web.manage');
-    Auth::guard(WebAccounts::guard())->login($this->panelAccount($this->admin));
+    $this->account = $this->panelAccount($this->admin);
+    Auth::guard(WebAccounts::guard())->login($this->account);
     $this->url = '/manage/'.$this->bot->unique_id.'/affiliates';
 });
 
@@ -84,3 +86,15 @@ it('refuses list updates once signed out', function () {
     $this->livewireRequest($this->url, 'ListAffiliates', 'sortTable', ['referrals_count'],
         fn () => Auth::guard(WebAccounts::guard())->logout())->assertUnauthorized();
 });
+
+it('links the member profile\'s affiliation to the affiliate screen', function () {
+    $member = $this->makeBotUser($this->bot, 9208);
+    $affiliate = affiliateOf($member, 'LINKED');
+    referredBy($affiliate, $this->makeBotUser($this->bot, 9209));
+    // The profile renders inside the panel, which gives the URL its bot.
+    $this->enterPanel('manage', $this->bot, $this->account);
+
+    $section = userManagementSections()->getSectionsFor($member)->firstWhere('key', 'affiliation');
+
+    expect($section?->webUrlFor($member))->toEndWith('/affiliates/'.$affiliate->id);
+})->skip(fn () => ! property_exists(UserSection::class, 'webUrl'), 'needs user-management with webUrl');
