@@ -13,11 +13,13 @@ class Referral extends Model
 
     protected $guarded = [];
 
+    /** @return BelongsTo<BotUser, $this> */
     public function botUser(): BelongsTo
     {
         return $this->belongsTo(BotUser::class);
     }
 
+    /** @return BelongsTo<Affiliate, $this> */
     public function affiliate(): BelongsTo
     {
         return $this->belongsTo(Affiliate::class);
