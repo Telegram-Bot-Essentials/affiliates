@@ -21,6 +21,7 @@ use TelegramBotEssentials\Affiliates\Telegram\ReplyKeys\Admin\AffiliatesKey;
 use TelegramBotEssentials\Affiliates\Telegram\ReplyKeys\Member\AffiliationKey;
 use TelegramBotEssentials\Affiliates\Telegram\StateAnswers\Admin\AffiliatesAnswer;
 use TelegramBotEssentials\Affiliates\Telegram\StateAnswers\Member\AffiliationAnswer;
+use TelegramBotEssentials\Affiliates\Web\AffiliatesManagePlugin;
 use TelegramBotEssentials\Billing\Events\InvoicePaid;
 use TelegramBotEssentials\Billing\Events\InvoiceRevoked;
 use TelegramBotEssentials\Essence\Events\BotDeepLinkReceived;
@@ -36,7 +37,11 @@ use TelegramBotEssentials\UserManagement\Services\UserManagementSections;
 
 class TbeAffiliatesServiceProvider extends ServiceProvider
 {
-    public function register(): void {}
+    public function register(): void
+    {
+        // Class names only: Filament is loaded only where the app installed it.
+        webPanels()->manage(AffiliatesManagePlugin::class);
+    }
 
     /**
      * @throws LogicException
@@ -48,6 +53,7 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadTranslationsFrom(__DIR__.'/../lang', 'tbe-affiliates');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'tbe-affiliates');
 
         callbackQueryBus()->addCallbackQueries([
             AffiliationQuery::class,
