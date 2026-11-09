@@ -1,0 +1,26 @@
+<?php
+
+declare(strict_types=1);
+
+namespace TelegramBotEssentials\Affiliates\Tests;
+
+use TelegramBotEssentials\Affiliates\TbeAffiliatesServiceProvider;
+use TelegramBotEssentials\Billing\TbeBillingServiceProvider;
+use TelegramBotEssentials\Essence\Testing\WebTestCase as EssenceWebTestCase;
+use TelegramBotEssentials\Settings\TbeSettingsServiceProvider;
+use TelegramBotEssentials\UserManagement\TbeUserManagementServiceProvider;
+use TelegramBotEssentials\UserWallet\TbeUserWalletServiceProvider;
+
+abstract class WebTestCase extends EssenceWebTestCase
+{
+    protected function getPackageProviders($app): array
+    {
+        return array_merge(parent::getPackageProviders($app), [
+            TbeSettingsServiceProvider::class,
+            TbeUserManagementServiceProvider::class,
+            TbeBillingServiceProvider::class,
+            TbeUserWalletServiceProvider::class,
+            TbeAffiliatesServiceProvider::class,
+        ]);
+    }
+}
