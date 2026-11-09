@@ -46,7 +46,8 @@ it('lists this bot\'s affiliates with their referrals and earnings', function ()
         ->assertOk()
         ->assertSee('OURCODE')
         ->assertDontSee('THEIRCODE')
-        ->assertSee(currency()->priceFormat('1500'));
+        ->assertSee(currency()->priceFormat('1500'))
+        ->assertSee(__('tbe-affiliates::web.stats.referrals_30'));
 });
 
 it('shows one affiliate\'s referrals and credits', function () {
