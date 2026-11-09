@@ -22,6 +22,7 @@ use TelegramBotEssentials\Affiliates\Telegram\ReplyKeys\Member\AffiliationKey;
 use TelegramBotEssentials\Affiliates\Telegram\StateAnswers\Admin\AffiliatesAnswer;
 use TelegramBotEssentials\Affiliates\Telegram\StateAnswers\Member\AffiliationAnswer;
 use TelegramBotEssentials\Affiliates\Web\AffiliatesManagePlugin;
+use TelegramBotEssentials\Affiliates\Web\Manage\AffiliateResource;
 use TelegramBotEssentials\Billing\Events\InvoicePaid;
 use TelegramBotEssentials\Billing\Events\InvoiceRevoked;
 use TelegramBotEssentials\Essence\Events\BotDeepLinkReceived;
@@ -104,13 +105,27 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
      * installed, the profile of a member who refers or was referred links to
      * their affiliation.
      */
+    /** The member's affiliate screen in the web panel, when they refer anyone. */
+    private static function affiliateWebUrl(BotUser $user): ?string
+    {
+        $affiliate = Affiliate::query()->where('bot_user_id', $user->id)->first();
+
+        return $affiliate === null ? null : AffiliateResource::getUrl('view', ['record' => $affiliate]);
+    }
+
     private function registerUserSection(): void
     {
         if (! class_exists(UserSection::class)) {
             return;
         }
 
+        // user-management before webUrl has no such parameter: pass it only when it exists.
+        $web = property_exists(UserSection::class, 'webUrl')
+            ? ['webUrl' => fn (BotUser $user): ?string => self::affiliateWebUrl($user)]
+            : [];
+
         app(UserManagementSections::class)->addSection(new UserSection(
+            ...$web,
             key: 'affiliation',
             order: 25,
             mode: SectionMode::BUTTON,
