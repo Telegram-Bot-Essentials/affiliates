@@ -9,6 +9,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use TelegramBotEssentials\Affiliates\Models\Affiliate;
 use TelegramBotEssentials\Affiliates\Telegram\Features\Admin\AffiliatesFeature;
+use TelegramBotEssentials\Affiliates\Web\Widgets\AffiliateStats;
 use TelegramBotEssentials\Essence\Models\BotUser;
 use TelegramBotEssentials\Essence\Web\Filament\PanelResource;
 
@@ -64,6 +65,11 @@ class AffiliateResource extends PanelResource
     public static function memberLabel(mixed $botUser): string
     {
         return $botUser instanceof BotUser ? AffiliatesFeature::label($botUser) : '—';
+    }
+
+    public static function getWidgets(): array
+    {
+        return [AffiliateStats::class];
     }
 
     public static function getPages(): array
