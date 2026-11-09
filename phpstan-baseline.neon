@@ -1,27 +1,8 @@
 parameters:
 	ignoreErrors:
-		-
-			message: '#^Access to an undefined property TelegramBotEssentials\\Affiliates\\Models\\Affiliate\:\:\$bot_user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/Listeners/HandleAffiliateReferral.php
-
-		-
-			message: '#^Cannot cast mixed to int\.$#'
-			identifier: cast.int
-			count: 1
-			path: src/Listeners/HandleAffiliateReferral.php
-
-		-
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
 			count: 2
-			path: src/Listeners/HandleAffiliateReferral.php
-
-		-
-			message: '#^Parameter \$for of function isolated expects TelegramBotEssentials\\Essence\\Models\\BotUser\|null, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
-			identifier: argument.type
-			count: 1
 			path: src/Listeners/HandleAffiliateReferral.php
 
 		-
@@ -31,21 +12,9 @@ parameters:
 			path: src/Listeners/HandleInvoicePaid.php
 
 		-
-			message: '#^Cannot access property \$botUser on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: src/Listeners/HandleInvoicePaid.php
-
-		-
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
 			count: 2
-			path: src/Listeners/HandleInvoicePaid.php
-
-		-
-			message: '#^Parameter \#1 \$user of method TelegramBotEssentials\\Essence\\Support\\Webhook\:\:runForUser\(\) expects TelegramBotEssentials\\Essence\\Models\\BotUser, mixed given\.$#'
-			identifier: argument.type
-			count: 1
 			path: src/Listeners/HandleInvoicePaid.php
 
 		-
@@ -85,18 +54,6 @@ parameters:
 			path: src/Listeners/HandleInvoiceRevoked.php
 
 		-
-			message: '#^Method TelegramBotEssentials\\Affiliates\\Models\\Affiliate\:\:botUser\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Models/Affiliate.php
-
-		-
-			message: '#^Method TelegramBotEssentials\\Affiliates\\Models\\Affiliate\:\:referrals\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Models/Affiliate.php
-
-		-
 			message: '#^Method TelegramBotEssentials\\Affiliates\\Models\\AffiliateTransaction\:\:invoice\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
 			identifier: missingType.generics
 			count: 1
@@ -113,18 +70,6 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: src/Models/AffiliateTransaction.php
-
-		-
-			message: '#^Method TelegramBotEssentials\\Affiliates\\Models\\Referral\:\:affiliate\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Models/Referral.php
-
-		-
-			message: '#^Method TelegramBotEssentials\\Affiliates\\Models\\Referral\:\:botUser\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Models/Referral.php
 
 		-
 			message: '#^Cannot access property \$peer_id on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
@@ -193,12 +138,6 @@ parameters:
 			path: src/Telegram/Features/Admin/AffiliatesFeature.php
 
 		-
-			message: '#^Access to an undefined property TelegramBotEssentials\\Affiliates\\Models\\Affiliate\:\:\$referral_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/Telegram/Features/Admin/AffiliatesFeature.php
-
-		-
 			message: '#^Binary operation "\." between ''@'' and mixed results in an error\.$#'
 			identifier: binaryOp.invalid
 			count: 1
@@ -262,12 +201,6 @@ parameters:
 			message: '#^Parameter \#1 \$botUser of static method TelegramBotEssentials\\Affiliates\\Telegram\\Features\\Admin\\AffiliatesFeature\:\:label\(\) expects TelegramBotEssentials\\Essence\\Models\\BotUser, mixed given\.$#'
 			identifier: argument.type
 			count: 4
-			path: src/Telegram/Features/Admin/AffiliatesFeature.php
-
-		-
-			message: '#^Parameter \#1 \$value of function e expects BackedEnum\|float\|Illuminate\\Contracts\\Support\\DeferringDisplayableValue\|Illuminate\\Contracts\\Support\\Htmlable\|int\|string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
 			path: src/Telegram/Features/Admin/AffiliatesFeature.php
 
 		-
