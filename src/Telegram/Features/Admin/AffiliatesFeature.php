@@ -138,7 +138,18 @@ class AffiliatesFeature
     /** Affiliates with their referral count and what they were credited, as columns to sort on. */
     public static function listQuery(): Builder
     {
-        return Affiliate::query()
+        return self::withTotals(Affiliate::query());
+    }
+
+    /**
+     * Adds the overview's columns to an affiliates query: referrals_count and earned.
+     *
+     * @param  Builder<Affiliate>  $query
+     * @return Builder<Affiliate>
+     */
+    public static function withTotals(Builder $query): Builder
+    {
+        return $query
             ->with('botUser.telegramUser')
             ->select('affiliates.*')
             ->withCount('referrals')
