@@ -24,6 +24,7 @@ return [
     ],
     'section' => [
         'label' => '🤝 زیرمجموعه‌گیری (:count)',
+        'title' => 'زیرمجموعه‌گیری',
     ],
     'show' => [
         'text' => [
