@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use TelegramBotEssentials\Affiliates\Models\Affiliate;
 use TelegramBotEssentials\Affiliates\Models\Referral;
+use TelegramBotEssentials\Affiliates\Telegram\Features\Member\AffiliationFeature;
 use TelegramBotEssentials\Essence\Telegram\Commands\Command;
 
 const AFFILIATION_GROUP = -100333;
@@ -75,4 +76,16 @@ it('still ignores a returning user arriving by referral link', function () {
     $this->postWebhookUpdate($this->bot, $this->makeMessageUpdate('/start FRIEND', 4300))->assertOk();
 
     expect(Referral::where('affiliate_id', $affiliate->id)->count())->toBe(0);
+});
+
+it('opens the menu for a user carrying a cached relation that is not a real one', function () {
+    wHook()->setBot($this->bot);
+    wHook()->setApi(telegramApi((string) $this->bot->bot_token));
+    wHook()->setUser($this->user);
+    Affiliate::create(['bot_id' => $this->bot->id, 'bot_user_id' => $this->user->id, 'referral_code' => 'CODE4001']);
+    Http::fake(['*/getMe' => Http::response(['ok' => true, 'result' => ['id' => 1, 'is_bot' => true, 'first_name' => 'Shop', 'username' => 'shop_bot']])]);
+    // Another package may cache data on the user with setRelation() alone.
+    $this->user->setRelation('accessRoles', collect());
+
+    expect(AffiliationFeature::menu()->text)->toContain('CODE4001');
 });

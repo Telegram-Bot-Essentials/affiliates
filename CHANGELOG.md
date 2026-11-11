@@ -6,6 +6,14 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+## [0.0.35] - 2026-11-03
+
+### Fixed
+
+- The affiliation menu no longer fails for a user carrying a relation another
+  package cached with `setRelation()` (the access package's `accessRoles`):
+  it loads the affiliate instead of refreshing the whole model.
+
 ## [0.0.34] - 2026-11-03
 
 ### Fixed

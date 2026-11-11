@@ -13,7 +13,7 @@ class AffiliationFeature
 
     public static function menu(): TelegramResponse
     {
-        $affiliate = wHook()->user()->refresh()->affiliate;
+        $affiliate = wHook()->user()->load('affiliate')->affiliate;
         if (! $affiliate) {
             $affiliate = wHook()->user()->affiliate()->create([
                 'referral_code' => uniqid(),
