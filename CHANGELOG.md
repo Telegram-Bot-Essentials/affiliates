@@ -6,6 +6,35 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+## [0.0.36] - 2026-11-11
+
+### Added
+
+- Give affiliates their bot and typed relations.
+- List affiliates and show one's referrals and credits.
+- Add the affiliates panel plugin.
+- Add the affiliate view.
+- Register the plugin and its views.
+- Translate the screens to english.
+- Translate the screens to persian.
+- Link the profile's affiliation to its screen.
+- Show the program as cards with sparklines.
+- Put the program cards above the list.
+- Add the program cards to the dashboard.
+- Translate the cards to english.
+- Translate the cards to persian.
+- Add the plain profile section title.
+- Add the persian profile section title.
+- Give the profile section as a summary.
+- Add empty-list messages.
+- Group, date and tidy the panel screens.
+- Build the affiliate page from the shared components.
+
+### Changed
+
+- Share the overview columns as withTotals().
+- Hand user-management the summary directly.
+
 ## [0.0.35] - 2026-11-03
 
 ### Fixed
