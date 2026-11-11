@@ -125,27 +125,20 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
             ->whereIn('affiliate_id', Affiliate::query()->where('bot_user_id', $user->id)->select('id'))
             ->count();
 
-        // user-management before summaries takes the bot's wording only: hand it the old label then.
-        $shown = property_exists(UserSection::class, 'summary')
-            ? [
-                'summary' => fn (BotUser $user): SectionSummary => new SectionSummary(
-                    title: __('tbe-affiliates::admin.section.title'),
-                    value: $referrals($user),
-                    emoji: '🤝',
-                    icon: Heroicon::OutlinedUserGroup,
-                ),
-                'webUrl' => fn (BotUser $user): ?string => self::affiliateWebUrl($user),
-            ]
-            : ['label' => fn (BotUser $user) => __('tbe-affiliates::admin.section.label', ['count' => $referrals($user)])];
-
         app(UserManagementSections::class)->addSection(new UserSection(
-            ...$shown,
             key: 'affiliation',
             order: 25,
             mode: SectionMode::BUTTON,
             target: fn (BotUser $user) => encodeCallback(AffiliatesFeature::$type, 'user', [$user->id]),
             active: fn (BotUser $user) => Affiliate::query()->where('bot_user_id', $user->id)->exists()
                 || Referral::query()->where('bot_user_id', $user->id)->exists(),
+            summary: fn (BotUser $user): SectionSummary => new SectionSummary(
+                title: __('tbe-affiliates::admin.section.title'),
+                value: $referrals($user),
+                emoji: '🤝',
+                icon: Heroicon::OutlinedUserGroup,
+            ),
+            webUrl: fn (BotUser $user): ?string => self::affiliateWebUrl($user),
         ));
 
         $sorts = app(BotUserSorts::class);
