@@ -23,4 +23,7 @@ return [
         'paid_30' => 'Credited, last 30 days',
         'paid_all_time' => ':amount since the start',
     ],
+    'empty' => [
+        'affiliates' => 'No affiliates yet',
+    ],
 ];
