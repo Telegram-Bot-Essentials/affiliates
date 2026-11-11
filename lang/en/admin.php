@@ -24,6 +24,7 @@ return [
     ],
     'section' => [
         'label' => '🤝 Affiliation (:count)',
+        'title' => 'Affiliation',
     ],
     'show' => [
         'text' => [
