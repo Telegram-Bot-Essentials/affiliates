@@ -11,7 +11,10 @@ use TelegramBotEssentials\Affiliates\Models\Affiliate;
 use TelegramBotEssentials\Affiliates\Telegram\Features\Admin\AffiliatesFeature;
 use TelegramBotEssentials\Affiliates\Web\Widgets\AffiliateStats;
 use TelegramBotEssentials\Essence\Models\BotUser;
+use TelegramBotEssentials\Essence\Web\Filament\PanelDates;
+use TelegramBotEssentials\Essence\Web\Filament\PanelGroup;
 use TelegramBotEssentials\Essence\Web\Filament\PanelResource;
+use UnitEnum;
 
 /** The affiliate program as the bot's admin overview shows it: who brings whom, and what it earned. */
 class AffiliateResource extends PanelResource
@@ -25,6 +28,8 @@ class AffiliateResource extends PanelResource
     protected static ?string $tenantOwnershipRelationshipName = 'bot';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;
+
+    protected static string|UnitEnum|null $navigationGroup = PanelGroup::Members;
 
     public static function getNavigationLabel(): string
     {
@@ -56,9 +61,12 @@ class AffiliateResource extends PanelResource
                     ->label((string) __('tbe-affiliates::web.earned'))
                     ->formatStateUsing(fn (mixed $state): string => currency()->priceFormat(is_numeric($state) ? (string) $state : '0'))
                     ->sortable(),
-                TextColumn::make('created_at')->label((string) __('tbe-affiliates::web.joined'))->since()->sortable(),
+                PanelDates::since(TextColumn::make('created_at'))->label((string) __('tbe-affiliates::web.joined'))->sortable(),
             ])
             ->defaultSort('earned', 'desc')
+            ->persistFiltersInSession()
+            ->persistSearchInSession()
+            ->emptyStateHeading((string) __('tbe-affiliates::web.empty.affiliates'))
             ->recordUrl(fn (Affiliate $record): string => ViewAffiliate::getUrl(['record' => $record]));
     }
 
