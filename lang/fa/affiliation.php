@@ -40,5 +40,6 @@ return [
     'placeholders' => [
         'link' => 'لینک دعوت',
         'earnings' => 'درآمد از دعوت',
+        'percentage' => 'سهم دعوت (درصد)',
     ],
 ];
