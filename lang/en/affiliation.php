@@ -37,4 +37,8 @@ return [
         'purchase_commission' => '💰 A user you referred made a purchase! :amount was added to your wallet.',
         'purchase_commission_reversed' => '⚠️ A referred purchase was reversed, so :amount was deducted from your wallet.',
     ],
+    'placeholders' => [
+        'link' => 'Referral link',
+        'earnings' => 'Referral earnings',
+    ],
 ];
