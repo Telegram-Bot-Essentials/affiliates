@@ -40,5 +40,6 @@ return [
     'placeholders' => [
         'link' => 'Referral link',
         'earnings' => 'Referral earnings',
+        'percentage' => 'Referral share (percent)',
     ],
 ];
