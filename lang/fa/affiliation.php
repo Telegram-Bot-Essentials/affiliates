@@ -37,4 +37,8 @@ return [
         'purchase_commission' => '💰 یکی از دعوت‌شدگان شما خرید انجام داد! مبلغ :amount به کیف پول شما اضافه شد.',
         'purchase_commission_reversed' => '⚠️ یک خرید دعوت‌شده لغو شد و مبلغ :amount از کیف پول شما کسر شد.',
     ],
+    'placeholders' => [
+        'link' => 'لینک دعوت',
+        'earnings' => 'درآمد از دعوت',
+    ],
 ];
