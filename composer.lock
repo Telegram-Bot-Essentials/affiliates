@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "041ba8f0363956153fc52f0f9ec21587",
+    "content-hash": "abc3f2e08f382266f9aa46b2112c5cef",
     "packages": [
         {
             "name": "brick/math",
@@ -12981,22 +12981,23 @@
         },
         {
             "name": "telegram-bot-essentials/announcements",
-            "version": "v0.0.25",
+            "version": "v0.0.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Telegram-Bot-Essentials/announcements.git",
-                "reference": "3aa061ea8a218fedcfcc548155136f6dfefe94d2"
+                "reference": "7dcd2992659e527d17341223b02eae6c30670734"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Telegram-Bot-Essentials/announcements/zipball/3aa061ea8a218fedcfcc548155136f6dfefe94d2",
-                "reference": "3aa061ea8a218fedcfcc548155136f6dfefe94d2",
+                "url": "https://api.github.com/repos/Telegram-Bot-Essentials/announcements/zipball/7dcd2992659e527d17341223b02eae6c30670734",
+                "reference": "7dcd2992659e527d17341223b02eae6c30670734",
                 "shasum": ""
             },
             "require": {
                 "laravel/framework": "^12 || ^13",
                 "php": "^8.3",
-                "telegram-bot-essentials/essence": "^0.19.0-beta.9@beta"
+                "telegram-bot-essentials/essence": "^0.19.0-beta.9@beta",
+                "telegram-bot-essentials/settings": "~0.0.33"
             },
             "require-dev": {
                 "filament/filament": "^5.11",
@@ -13040,9 +13041,9 @@
             "description": "Bulk broadcast with live progress and retraction for telegram-bot-essentials/essence",
             "support": {
                 "issues": "https://github.com/Telegram-Bot-Essentials/announcements/issues",
-                "source": "https://github.com/Telegram-Bot-Essentials/announcements/tree/v0.0.25"
+                "source": "https://github.com/Telegram-Bot-Essentials/announcements/tree/v0.0.26"
             },
-            "time": "2026-11-15T13:27:33+00:00"
+            "time": "2026-11-15T13:47:30+00:00"
         },
         {
             "name": "telegram-bot-essentials/user-management",

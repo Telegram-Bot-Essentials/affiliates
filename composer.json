@@ -12,7 +12,7 @@
         "telegram-bot-essentials/user-wallet": "~0.0.22"
     },
     "suggest": {
-        "telegram-bot-essentials/announcements": "Lets announcement texts show each recipient's referral link and earnings.",
+        "telegram-bot-essentials/announcements": "Lets announcement texts show each recipient's referral link and earnings, and adds an alert that introduces the programme.",
         "telegram-bot-essentials/user-management": "Adds an affiliation section to a member's profile in the admin user list."
     },
     "license": "MIT",
@@ -45,7 +45,7 @@
         "orchestra/testbench": "^10.0 || ^11.0",
         "pestphp/pest": "^3.7 || ^4.0",
         "pestphp/pest-plugin-laravel": "^3.1 || ^4.0",
-        "telegram-bot-essentials/announcements": "~0.0.25",
+        "telegram-bot-essentials/announcements": "~0.0.26",
         "telegram-bot-essentials/user-management": "~0.0.17"
     },
     "conflict": {

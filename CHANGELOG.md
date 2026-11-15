@@ -6,6 +6,11 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+### Added
+
+- Register an automatic alert that introduces the referral programme, and its audience, when announcements is installed.
+- Offer `{$affiliates.percentage}` to announcement texts.
+
 ## [0.0.37] - 2026-11-15
 
 ### Added
