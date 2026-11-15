@@ -24,6 +24,7 @@ use TelegramBotEssentials\Affiliates\Telegram\StateAnswers\Admin\AffiliatesAnswe
 use TelegramBotEssentials\Affiliates\Telegram\StateAnswers\Member\AffiliationAnswer;
 use TelegramBotEssentials\Affiliates\Web\AffiliatesManagePlugin;
 use TelegramBotEssentials\Affiliates\Web\Manage\AffiliateResource;
+use TelegramBotEssentials\Announcements\DTOs\Placeholder;
 use TelegramBotEssentials\Billing\Events\InvoicePaid;
 use TelegramBotEssentials\Billing\Events\InvoiceRevoked;
 use TelegramBotEssentials\Essence\Events\BotDeepLinkReceived;
@@ -84,6 +85,7 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
 
         $this->addSettings();
         $this->registerUserSection();
+        $this->registerAnnouncementPlaceholders();
 
         BotUser::resolveRelationUsing('affiliate', function (BotUser $user) {
             return $user->hasOne(
@@ -113,6 +115,58 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
         $affiliate = Affiliate::query()->where('bot_user_id', $user->id)->first();
 
         return $affiliate === null ? null : AffiliateResource::getUrl('view', ['record' => $affiliate]);
+    }
+
+    /**
+     * `{$affiliates.link}` and `{$affiliates.earnings}` in announcement texts.
+     * Registered only when announcements is installed, which this package
+     * does not require.
+     */
+    private function registerAnnouncementPlaceholders(): void
+    {
+        if (! class_exists(Placeholder::class)) {
+            return;
+        }
+
+        $active = fn () => (bool) settings()->get('affiliates.affiliates_status');
+
+        announcementPlaceholders()
+            ->add(new Placeholder(
+                key: 'affiliates.link',
+                label: fn () => __('tbe-affiliates::affiliation.placeholders.link'),
+                // A member who never opened the affiliation menu has no code
+                // yet: they get one here, as the menu would give them.
+                resolve: function (BotUser $user): ?string {
+                    $username = wHook()->bot()->username();
+                    if ($username === null) {
+                        return null;
+                    }
+
+                    $code = Affiliate::query()
+                        ->firstOrCreate(
+                            ['bot_user_id' => $user->id],
+                            // Named, not left to the tenant scope: this runs on the queue.
+                            ['bot_id' => $user->getAttribute('bot_id'), 'referral_code' => uniqid()],
+                        )
+                        ->getAttribute('referral_code');
+
+                    return is_string($code) ? "https://t.me/{$username}?start={$code}" : null;
+                },
+                example: 'https://t.me/your_bot?start=64f1c2a9e1b3d',
+                active: $active,
+            ))
+            ->add(new Placeholder(
+                key: 'affiliates.earnings',
+                label: fn () => __('tbe-affiliates::affiliation.placeholders.earnings'),
+                resolve: fn (BotUser $user) => currency()->priceFormat(
+                    (string) AffiliateTransaction::query()
+                        ->where('recipient_bot_user_id', $user->id)
+                        ->where('status', AffiliateTransaction::STATUS_CREDITED)
+                        ->sum('amount')
+                ),
+                example: fn () => currency()->priceFormat('120000'),
+                active: $active,
+            ));
     }
 
     private function registerUserSection(): void
