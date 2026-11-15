@@ -6,6 +6,8 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+## [0.0.37] - 2026-11-15
+
 ### Added
 
 - Offer `{$affiliates.link}` and `{$affiliates.earnings}` to announcement texts when announcements is installed.
