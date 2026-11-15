@@ -6,6 +6,8 @@ stabilizes at 1.0 a `0.0.x` bump may carry breaking changes.
 
 ## [Unreleased]
 
+## [0.0.38] - 2026-11-15
+
 ### Added
 
 - Register an automatic alert that introduces the referral programme, and its audience, when announcements is installed.
