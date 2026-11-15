@@ -24,6 +24,9 @@ use TelegramBotEssentials\Affiliates\Telegram\StateAnswers\Admin\AffiliatesAnswe
 use TelegramBotEssentials\Affiliates\Telegram\StateAnswers\Member\AffiliationAnswer;
 use TelegramBotEssentials\Affiliates\Web\AffiliatesManagePlugin;
 use TelegramBotEssentials\Affiliates\Web\Manage\AffiliateResource;
+use TelegramBotEssentials\Announcements\DTOs\Alert;
+use TelegramBotEssentials\Announcements\DTOs\AlertParam;
+use TelegramBotEssentials\Announcements\DTOs\Audience;
 use TelegramBotEssentials\Announcements\DTOs\Placeholder;
 use TelegramBotEssentials\Billing\Events\InvoicePaid;
 use TelegramBotEssentials\Billing\Events\InvoiceRevoked;
@@ -86,6 +89,7 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
         $this->addSettings();
         $this->registerUserSection();
         $this->registerAnnouncementPlaceholders();
+        $this->registerAnnouncementAlerts();
 
         BotUser::resolveRelationUsing('affiliate', function (BotUser $user) {
             return $user->hasOne(
@@ -167,6 +171,61 @@ class TbeAffiliatesServiceProvider extends ServiceProvider
                 example: fn () => currency()->priceFormat('120000'),
                 active: $active,
             ));
+    }
+
+    /**
+     * "Invite friends and earn": an automatic alert that introduces the
+     * referral programme to members who have not brought anyone in yet.
+     * Registered only when announcements is installed, and sent only once
+     * an admin switches it on.
+     */
+    private function registerAnnouncementAlerts(): void
+    {
+        if (! class_exists(Alert::class)) {
+            return;
+        }
+
+        $active = fn () => (bool) settings()->get('affiliates.affiliates_status');
+        $text = fn (string $key) => fn () => __('tbe-affiliates::alerts.intro.'.$key);
+
+        announcementPlaceholders()->add(new Placeholder(
+            key: 'affiliates.percentage',
+            label: fn () => __('tbe-affiliates::affiliation.placeholders.percentage'),
+            resolve: function (): string {
+                $percentage = settings()->get('affiliates.share_percentage');
+
+                return is_scalar($percentage) ? (string) $percentage : '';
+            },
+            example: '10',
+            active: $active,
+        ));
+
+        announcementAudiences()->add(new Audience(
+            key: 'affiliates.no_referrals',
+            label: $text('audience'),
+            apply: fn (Builder $query) => $query
+                ->where('bot_users.created_at', '<=', now()->subDays(announcementAlerts()->param('affiliates.intro', 'after_days')))
+                ->whereNotIn('bot_users.id', Affiliate::query()->whereHas('referrals')->select('bot_user_id')),
+            active: $active,
+        ));
+
+        announcementAlerts()->register(new Alert(
+            key: 'affiliates.intro',
+            label: $text('label'),
+            audience: 'affiliates.no_referrals',
+            text: $text('text'),
+            params: [
+                new AlertParam(
+                    key: 'after_days',
+                    label: $text('after_days'),
+                    default: 3,
+                    description: $text('after_days_description'),
+                ),
+            ],
+            priority: 60,
+            active: $active,
+            description: $text('description'),
+        ));
     }
 
     private function registerUserSection(): void
